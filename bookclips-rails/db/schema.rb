@@ -11,15 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141224163234) do
+ActiveRecord::Schema.define(version: 20141225125234) do
 
   create_table "bookmarks", force: true do |t|
-    t.string   "title"
-    t.text     "description"
     t.string   "url"
-    t.string   "tag"
+    t.integer  "hashtag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "bookmarks", ["hashtag_id"], name: "index_bookmarks_on_hashtag_id"
+
+  create_table "hashtags", force: true do |t|
+    t.string   "topic"
+    t.integer  "bookmark_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "hashtags", ["bookmark_id"], name: "index_hashtags_on_bookmark_id"
 
 end

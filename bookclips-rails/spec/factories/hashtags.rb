@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :hashtag do
     topic "Memes"
-bookmark nil
+# bookmark nil
   end
 
 end

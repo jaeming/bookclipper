@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :hashtags
-
+resources :hashtags
 resources :bookmarks
 
 root 'bookmarks#index'

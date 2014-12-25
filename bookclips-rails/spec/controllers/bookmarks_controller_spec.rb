@@ -19,6 +19,7 @@ RSpec.describe BookmarksController, :type => :controller do
 
     expect(response).to have_http_status(:success)
     json = JSON.parse(response.body)
+
     expect(json['url']).to eq("http://www.specific-url.com")
   end
 end

@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20141225125234) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "bookmarks", force: true do |t|
     t.string   "url"
     t.integer  "hashtag_id"
@@ -20,7 +23,7 @@ ActiveRecord::Schema.define(version: 20141225125234) do
     t.datetime "updated_at"
   end
 
-  add_index "bookmarks", ["hashtag_id"], name: "index_bookmarks_on_hashtag_id"
+  add_index "bookmarks", ["hashtag_id"], name: "index_bookmarks_on_hashtag_id", using: :btree
 
   create_table "hashtags", force: true do |t|
     t.string   "topic"
@@ -29,6 +32,6 @@ ActiveRecord::Schema.define(version: 20141225125234) do
     t.datetime "updated_at"
   end
 
-  add_index "hashtags", ["bookmark_id"], name: "index_hashtags_on_bookmark_id"
+  add_index "hashtags", ["bookmark_id"], name: "index_hashtags_on_bookmark_id", using: :btree
 
 end

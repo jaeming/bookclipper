@@ -4,9 +4,11 @@ ruby "2.1.5"
 gem 'active_model_serializers'
 gem 'devise'
 gem 'pry'
+gem 'pg'
+
 
 group :development, :test do
-  gem 'sqlite3'
+  # gem 'sqlite3'
   gem 'spring'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -17,10 +19,8 @@ group :test do
   gem 'database_cleaner'
 end
 
+gem 'rails_12factor', group: :production
 
-group :production do
-  gem 'pg'
-end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
 gem 'sdoc', '~> 0.4.0',          group: :doc

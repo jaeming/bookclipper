@@ -4,3 +4,8 @@ button, .button {
   background: transparent; }
   button:hover, .button:hover {
     background: tomato; }
+  button:focus, .button:focus {
+    border: 3px solid #49aee3; }
+
+*:focus {
+  outline: 0; }

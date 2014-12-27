@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import startApp from 'bookclipper/tests/helpers/start-app';
-import Ember from 'ember';
 
 var App;
 

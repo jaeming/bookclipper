@@ -1,0 +1,15 @@
+#replace this CONSUMERKEY & CONSUMERSECRET with your own keys and rename this file to app_config.yml
+
+defaults: &defaults
+  twitter:
+    clientId: "CONSUMERKEY"
+    clientSecret: "CONSUMERSECRET"
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

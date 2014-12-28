@@ -1,10 +1,13 @@
-source 'https://rubygems.org'
+# source 'https://rubygems.org'
+source 'http://production.s3.rubygems.org'
 ruby "2.1.5"
 
 gem 'active_model_serializers'
-gem 'devise'
 gem 'pry'
 gem 'pg'
+gem 'devise'
+gem 'omniauth-twitter'
+gem 'uuidtools'
 
 
 group :development, :test do

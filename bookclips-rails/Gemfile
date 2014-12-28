@@ -8,6 +8,7 @@ gem 'pg'
 gem 'devise'
 gem 'omniauth-twitter'
 gem 'uuidtools'
+gem 'figaro', '1.0'
 
 
 group :development, :test do

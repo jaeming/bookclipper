@@ -9,6 +9,9 @@ Router.map(function() {
   this.resource('bookmarks', function() {
     this.route('show', {path: ':bookmark_id'});
   });
+  this.resource('hashtags', function() {
+    this.route('show', {path: ':hashtag_id'});
+  });
 });
 
 export default Router;

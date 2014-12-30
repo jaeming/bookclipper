@@ -50,7 +50,7 @@ module('integration - Bookmarks page', {
 test('Should be able to navigate to a Bookmark page', function() {
   visit('/bookmarks').then(function() {
     click("a:contains('http://www.ember.js')").then(function() {
-      equal(find('h4').text(), 'http://www.ember.js #Javascript');
+      equal(find('h4').text(), 'http://www.ember.js');
     });
   });
 });

@@ -18,6 +18,6 @@ RSpec.describe HashtagsController, :type => :controller do
 
     expect(response).to have_http_status(:success)
     json = JSON.parse(response.body)
-    expect(json['topic']).to eq("Tech")
+    expect(JsonPath.on(json, '$..topic')).to eq(["Tech"])
   end
 end

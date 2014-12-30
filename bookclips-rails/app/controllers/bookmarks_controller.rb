@@ -8,7 +8,7 @@ class BookmarksController < ApplicationController
 
   def show
     @bookmark = Bookmark.find(params[:id])
-    render json: @bookmark, root: false
+    render json: @bookmark
   end
 
 end

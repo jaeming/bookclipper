@@ -1,8 +1,8 @@
 {{#each}}
-  <ul>
-    <li>
-      {{link-to url 'bookmarks.show' this}}
-      <small>#{{hashtag_topic}}</small>
-    </li>
-  </ul>
+  <p>
+    {{link-to url 'bookmarks.show' this}}
+
+    <small>#{{hashtag_id.topic}}</small>
+
+  </p>
 {{/each}}

@@ -8,6 +8,6 @@ class HashtagsController < ApplicationController
 
   def show
     @hashtag = Hashtag.find(params[:id])
-    render json: @hashtag, serializer: HashtagShowBookmarksSerializer, root: false
+    render json: @hashtag
   end
 end

@@ -1,5 +1,5 @@
-# source 'https://rubygems.org'
-source 'http://production.s3.rubygems.org'
+source 'https://rubygems.org'
+# source 'http://production.s3.rubygems.org'
 ruby "2.1.5"
 
 gem 'active_model_serializers'

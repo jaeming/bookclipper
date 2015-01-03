@@ -50,7 +50,7 @@ module('integration - Hashtags page', {
 test('Should be able to navigate to a Hashtag page', function() {
   visit('/hashtags').then(function() {
     click("a:contains('Javascript')").then(function() {
-      equal(find('h3').text(), "#Javascript");
+      equal(find('h3').text(), "Javascript");
     });
   });
 });

@@ -39,6 +39,13 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
+  ENV.contentSecurityPolicy = {
+  'default-src': "'none'",
+  'img-src': "'self'",
+  'style-src': "'self' 'unsafe-inline' http://fonts.googleapis.com", // Allow inline styles and loaded CSS from http://fonts.googleapis.com 
+  'media-src': "'self'"
+}
+
   if (environment === 'production') {
 
   }

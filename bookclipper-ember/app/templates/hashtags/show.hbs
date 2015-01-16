@@ -1,7 +1,7 @@
-<small>{{bookmark_ids.length}} bookmarks</small>
+<small>{{bookmarks.length}} bookmarks</small>
 <h3>{{topic}}</h3>
 <br>
-{{#each bookmark_ids}}
+{{#each bookmarks}}
   <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
   <p>{{link-to url 'bookmarks.show' this}}</p>
 {{/each}}

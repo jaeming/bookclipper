@@ -3,7 +3,9 @@
   <p>
     {{link-to url 'bookmarks.show' this}}
 
-    <small>#{{hashtag_id.topic}}</small>
+    {{#each hashtags}}
+    <small>#{{topic}}</small>
+    {{/each}}
 
   </p>
 {{/each}}

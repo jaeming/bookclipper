@@ -1,5 +1,7 @@
 class HashtagSerializer < ActiveModel::Serializer
-  embed :ids, include: true
-  attributes :id, :topic
-  has_many :bookmarks
+  attributes :id, :topic, :bookmarks
+
+  def bookmarks
+    object.bookmark_ids
+  end
 end

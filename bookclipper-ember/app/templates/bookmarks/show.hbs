@@ -1,4 +1,6 @@
-<small>#{{hashtag_id.topic}}</small>
+{{#each hashtags}}
+  <small>#{{topic}}</small>
+{{/each}}
 <br>
 <img {{bind-attr src="bookmark_img"}} alt='' class='bookmark-img'>
 <h4>{{url}}</h4>

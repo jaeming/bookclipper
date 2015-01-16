@@ -2,7 +2,8 @@ class CreateBookmarks < ActiveRecord::Migration
   def change
     create_table :bookmarks do |t|
       t.string :url
-      t.references :hashtag, index: true
+      t.string :title
+      t.string :description
 
       t.timestamps
     end

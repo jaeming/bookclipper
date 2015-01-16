@@ -11,7 +11,7 @@ require 'faker'
 end
 users = User.all
 
-7.times do
+20.times do
   hashtag = Hashtag.new(
     topic:  Faker::Hacker.noun,
   )
@@ -23,39 +23,55 @@ hashtags = Hashtag.all
 
 bookmarks = Bookmark.create([{
     url: 'http://benjidalton.com',
-    hashtag: hashtags.sample,
+    title: 'Benji Dalton\'s Blog',
+    description: 'The blog of Benji Dalton',
+    hashtags: hashtags.sample(3),
     user: users.sample
   },
   {
     url: 'http://railscasts.com',
-    hashtag: hashtags.sample,
+    title: 'Rails Casts',
+    description: 'Ryan Bates reigns in Rails',
+    hashtags: hashtags.sample(3),
     user: users.sample
   },
   {
     url: 'http://bloc.io',
-    hashtag: hashtags.sample,
+    title: 'Bloc Education',
+    description: 'Learn to code, etc...',
+    hashtags: hashtags.sample(3),
     user: users.sample
   },
   {
     url: 'http://foundation.zurb.com',
-    hashtag: hashtags.sample,
+    title: 'Zurb Foundation',
+    description: 'The 2nd most popular framework for front-ends',
+    hashtags: hashtags.sample(3),
     user: users.sample
   },
   {
     url: 'http://crunchyroll.com',
-    hashtag: hashtags.sample,
+    title: 'crunchyroll anime',
+    description: 'Watch it now!',
+    hashtags: hashtags.sample(3),
     user: users.sample
   },
   {
     url: 'http://codeschool.com',
-    hashtag: hashtags.sample,
+    title: 'The school of code',
+    description: 'We teach you code stuffs',
+    hashtags: hashtags.sample(3),
     user: users.sample
   },
   {
     url: 'http://reddit.com',
-    hashtag: hashtags.sample,
+    title: 'lots of memes and AMA\'s',
+    description: 'The largest user community of something.',
+    hashtags: hashtags.sample(3),
     user: users.sample
   }])
+
+bookmark = Bookmark.all
 
 puts "Seeds generated"
 puts "#{User.count} Users created"

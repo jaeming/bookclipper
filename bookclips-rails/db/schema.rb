@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104071750) do
+ActiveRecord::Schema.define(version: 20150116083703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,23 +30,28 @@ ActiveRecord::Schema.define(version: 20150104071750) do
 
   create_table "bookmarks", force: true do |t|
     t.string   "url"
-    t.integer  "hashtag_id"
+    t.string   "title"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
   end
 
-  add_index "bookmarks", ["hashtag_id"], name: "index_bookmarks_on_hashtag_id", using: :btree
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id", using: :btree
+
+  create_table "bookmarks_hashtags", id: false, force: true do |t|
+    t.integer "bookmark_id", null: false
+    t.integer "hashtag_id",  null: false
+  end
+
+  add_index "bookmarks_hashtags", ["bookmark_id", "hashtag_id"], name: "index_bookmarks_hashtags_on_bookmark_id_and_hashtag_id", using: :btree
+  add_index "bookmarks_hashtags", ["hashtag_id", "bookmark_id"], name: "index_bookmarks_hashtags_on_hashtag_id_and_bookmark_id", using: :btree
 
   create_table "hashtags", force: true do |t|
     t.string   "topic"
-    t.integer  "bookmark_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "hashtags", ["bookmark_id"], name: "index_hashtags_on_bookmark_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"

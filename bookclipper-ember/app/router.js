@@ -8,6 +8,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.resource('bookmarks', function() {
     this.route('show', {path: ':bookmark_id'});
+    this.route('new');
   });
   this.resource('hashtags', function() {
     this.route('show', {path: ':hashtag_id'});

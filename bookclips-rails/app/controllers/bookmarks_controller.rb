@@ -11,4 +11,30 @@ class BookmarksController < ApplicationController
     render json: @bookmark
   end
 
+  def new
+    @bookmark = Bookmark.new
+    @hashtag = Hashtag.new
+  end
+
+  def create
+    @bookmark = Bookmark.create(bookmark_params)
+    @hashtags = tag_topics.map { |tag| Hashtag.find_or_create_by(topic: tag) }
+    @bookmark.hashtags = @hashtags
+    render json: [@bookmark, @bookmark.hashtags]
+  end
+
+  private
+
+    def bookmark_params
+      params.require(:bookmark).permit(:url, :title, :description, :tags)
+    end
+
+    def tag_topics
+      if params[:tags] && params[:tags] != ""
+        params[:tags].downcase.split(", ")
+      else
+        ["random"]
+      end
+    end
+
 end

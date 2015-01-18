@@ -10,4 +10,19 @@ class HashtagsController < ApplicationController
     @hashtag = Hashtag.find(params[:id])
     render json: @hashtag
   end
+
+  def new
+    @hashtag = Hashtag.new
+  end
+
+  def create
+    @hashtag = Hashtag.create(hashtag_params)
+    @hashtag.save!
+    respond_with @hashtag
+  end
+
+  private
+    def hashtag_params
+      params.require(:hashtag).permit(:topic)
+    end
 end

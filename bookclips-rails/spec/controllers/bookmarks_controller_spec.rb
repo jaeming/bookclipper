@@ -27,13 +27,13 @@ RSpec.describe BookmarksController, :type => :controller do
   end
 
   it "assoiciates a default hashtag with a new bookmark when none are supplied" do
-    bookmark_params2 = {"bookmark" => {"url"=>"http://benjidalton.com"}, "format" => "json"}
+    bookmark_params = {"bookmark" => {"url"=>"http://benjidalton.com"}, "format" => "json"}
 
-    post :create, bookmark_params2
-    json2 = JSON.parse(response.body)
-    default_topic = JsonPath.on(json2, '$..topic')
+    post :create, bookmark_params
+    bookmark = Bookmark.last
+    hashtag = bookmark.hashtags[0]
 
-    expect(default_topic).to eq(["random"])
+    expect(hashtag.topic).to eq("random")
   end
 end
 

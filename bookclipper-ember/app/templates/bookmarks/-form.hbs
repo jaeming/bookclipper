@@ -1,0 +1,10 @@
+<form {{action "save" on="submit"}}>
+  <label>URL:
+    {{input value=model.url}}
+  </label>
+  <label>tags:
+    {{input value=model.tags}}
+  </label>
+  <br>
+  <input type="submit" value="save" class="button tiny" />
+</form>

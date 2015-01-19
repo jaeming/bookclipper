@@ -42,6 +42,10 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    embedly (1.9.1)
+      json
+      oauth
+      querystring
     erubis (2.7.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -80,6 +84,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    querystring (0.1.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -154,6 +159,7 @@ DEPENDENCIES
   active_model_serializers
   database_cleaner
   devise
+  embedly
   factory_girl_rails
   faker
   figaro (= 1.0)

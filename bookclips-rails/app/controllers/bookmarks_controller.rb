@@ -17,10 +17,14 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    @bookmark = Bookmark.create(bookmark_params)
-    @hashtags = tag_topics.map { |tag| Hashtag.find_or_create_by(topic: tag) }
-    @bookmark.hashtags = @hashtags
-    respond_with @bookmark
+    if current_user
+      @bookmark = Bookmark.create(bookmark_params)
+      @hashtags = tag_topics.map { |tag| Hashtag.find_or_create_by(topic: tag) }
+      @bookmark.hashtags = @hashtags
+      respond_with @bookmark
+    else
+      head :unauthorized
+    end
   end
 
   private

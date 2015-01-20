@@ -1,12 +1,6 @@
 import DS from 'ember-data';
 import Ember from "ember";
 
-// $.ajaxSetup({
-//   xhrFields: {
-//     withCredentials: true
-//   }
-// });
-
 DS.RESTAdapter.reopen({
   coalesceFindRequests: true
 });

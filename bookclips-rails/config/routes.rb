@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 resources :hashtags
 resources :bookmarks
 
+get :csrf, to: 'csrf#index'
 
 root 'bookmarks#index'
 

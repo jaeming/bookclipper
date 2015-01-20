@@ -47,10 +47,10 @@ module('integration - Bookmarks page', {
   }
 });
 
-test('Should be able to navigate to a Bookmark page', function() {
+test('Should be able to navigate to a create form for bookmarks', function() {
   visit('/bookmarks').then(function() {
-    click("a:contains('http://www.ember.js')").then(function() {
-      equal(find('h4').text(), 'http://www.ember.js');
+    click("a:contains('Create New')").then(function() {
+      equal(find('h3').text(), 'New Bookclip');
     });
   });
 });

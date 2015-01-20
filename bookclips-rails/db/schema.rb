@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20150116083703) do
   create_table "bookmarks", force: true do |t|
     t.string   "url"
     t.string   "title"
-    t.string   "description"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"

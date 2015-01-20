@@ -3,7 +3,7 @@ class CreateBookmarks < ActiveRecord::Migration
     create_table :bookmarks do |t|
       t.string :url
       t.string :title
-      t.string :description
+      t.text :description
 
       t.timestamps
     end

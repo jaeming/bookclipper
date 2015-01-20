@@ -4,9 +4,11 @@
 <div class="row">
   <div class="columns medium-6">
     {{#each}}
-      <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
+      <h5>{{title}}</h5>
+      {{#link-to 'bookmarks.show' this}}
+        <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
+      {{/link-to}}
       <p>
-        {{link-to url 'bookmarks.show' this}}
         {{#each hashtags}}
         <small>#{{topic}}</small>
         {{/each}}

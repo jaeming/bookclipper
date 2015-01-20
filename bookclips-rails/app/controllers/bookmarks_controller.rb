@@ -36,5 +36,4 @@ class BookmarksController < ApplicationController
         ["random"]
       end
     end
-
 end

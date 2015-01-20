@@ -10,4 +10,11 @@ RSpec.describe Bookmark, :type => :model do
     expect(bookmark2).to be_invalid
   end
 
+  it "generates a title and description for bookmarks" do
+    bookmark = create(:bookmark, url: "http://apple.com")
+
+    expect(bookmark.title).not_to be_nil
+    expect(bookmark.description).not_to be_nil
+  end
+
 end

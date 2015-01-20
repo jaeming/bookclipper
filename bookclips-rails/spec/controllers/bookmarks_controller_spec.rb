@@ -35,6 +35,7 @@ RSpec.describe BookmarksController, :type => :controller do
 
     expect(hashtag.topic).to eq("random")
   end
+
 end
 
 

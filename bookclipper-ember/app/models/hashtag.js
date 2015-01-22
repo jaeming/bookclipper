@@ -6,5 +6,5 @@ DS.RESTAdapter.reopen({
 
 export default DS.Model.extend({
   topic: DS.attr('string'),
-  bookmarks: DS.hasMany('Bookmark', { async: true }),
+  bookmarks: DS.hasMany('Bookmark', { async: true })
 });

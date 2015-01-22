@@ -1,0 +1,22 @@
+<div class="columns medium-6">
+  <h3>Sign up</h3>
+
+  <a href="http://localhost:3000/users/auth/twitter">Log in with Twitter</a>
+
+  <form {{action "save" on="submit"}}>
+    <label>Email:
+      {{input value=email}}
+    </label>
+    <label>name:
+      {{input value=name}}
+    </label>
+    <label>Password:
+      {{input value=password}}
+    </label>
+    <label>Confirm Password:
+      {{input value=password_confirmation}}
+    </label>
+    <br>
+    <input type="submit" value="save" class="button tiny" />
+  </form>
+</div>

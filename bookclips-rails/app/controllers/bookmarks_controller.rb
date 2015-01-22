@@ -19,8 +19,7 @@ class BookmarksController < ApplicationController
   def create
     if current_user
       @bookmark = Bookmark.create(bookmark_params)
-      @hashtags = tag_topics.map { |tag| Hashtag.find_or_create_by(topic: tag) }
-      @bookmark.hashtags = @hashtags
+      @hashtags = tag_topics.each { |tag| @bookmark.hashtags.find_or_create_by(topic: tag) }
       respond_with @bookmark
     else
       head :unauthorized

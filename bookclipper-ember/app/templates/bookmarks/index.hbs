@@ -8,11 +8,13 @@
       {{#link-to 'bookmarks.show' this}}
         <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
       {{/link-to}}
-      <p>
-        {{#each hashtags}}
+      <br>
+      {{#each hashtags}}
         <small>#{{topic}}</small>
-        {{/each}}
-      </p>
+      {{/each}}
+      <br>
+      <small class='small'>Submitted by {{user.name}}</small>
+      <br><br>
     {{/each}}
   </div>
 </div>

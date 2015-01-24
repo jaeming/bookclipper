@@ -1,2 +1,9 @@
-<p>{{name}}</p>
-<p>{{email}}</p>
+<p>
+  {{name}}
+  <small>
+    {{bookmarks.length}} bookmarks
+  </small>
+</p>
+{{#each bookmarks}}
+  {{link-to title 'bookmarks.show' this}}
+{{/each}}

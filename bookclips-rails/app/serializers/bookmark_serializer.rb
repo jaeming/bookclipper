@@ -1,7 +1,12 @@
 class BookmarkSerializer < ActiveModel::Serializer
-  attributes :id, :url, :user, :title, :description, :hashtags
+  attributes :id, :url, :title, :description, :hashtags, :user
 
   def hashtags
-    object.hashtag_ids
+    object.hashtags
   end
+
+  def user
+    object.user.id
+  end
+
 end

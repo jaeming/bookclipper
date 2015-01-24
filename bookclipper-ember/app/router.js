@@ -13,9 +13,8 @@ Router.map(function() {
   this.resource('hashtags', function() {
     this.route('show', {path: ':hashtag_id'});
   });
-  this.resource('sessions', function() {
-    this.route('current');
-  });
+  this.route('login');
+  this.route('current');
   this.resource('users', function() {
     this.route('show', {path: ':user_id'});
     this.route('new');

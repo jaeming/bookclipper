@@ -13,7 +13,7 @@
         <small>#{{topic}}</small>
       {{/each}}
       <br>
-      <small class='small'>Submitted by {{user.name}}</small>
+      <small class='small'>Clipped by {{#link-to 'users.show' this.user}} {{user.name}} {{/link-to}}</small>
       <br><br>
     {{/each}}
   </div>

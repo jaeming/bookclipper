@@ -6,9 +6,9 @@ export default DS.RESTSerializer.extend( {
   }
 });
 
-export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
-  attrs: {
-    user: {embedded: 'always'}
-  }
-});
+// export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
+//   attrs: {
+//     user: {embedded: 'always'}
+//   }
+// });
 

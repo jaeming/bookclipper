@@ -5,5 +5,12 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
   has_many :authorizations, :dependent => :destroy
   has_many :bookmarks
+  # after_create :add_name_if_null
+
+  # def add_name_if_null
+  #   if self.name = null
+  #     self.name = self.email[/[^@]+/]
+  #   end
+  # end
 
 end

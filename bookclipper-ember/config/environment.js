@@ -19,6 +19,12 @@ module.exports = function(environment) {
     }
   };
 
+
+
+  ENV['simple-auth'] = {
+  store: 'simple-auth-session-store:local-storage'
+}
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -42,7 +48,7 @@ module.exports = function(environment) {
   ENV.contentSecurityPolicy = {
   'default-src': "'none'",
   'img-src': "'self'",
-  'style-src': "'self' 'unsafe-inline' http://fonts.googleapis.com", // Allow inline styles and loaded CSS from http://fonts.googleapis.com 
+  'style-src': "'self' 'unsafe-inline' http://fonts.googleapis.com", // Allow inline styles and loaded CSS from http://fonts.googleapis.com
   'media-src': "'self'"
 }
 

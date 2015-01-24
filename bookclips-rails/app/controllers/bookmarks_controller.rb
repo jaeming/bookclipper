@@ -19,24 +19,27 @@ class BookmarksController < ApplicationController
   def create
     if current_user
       @bookmark = Bookmark.create(bookmark_params)
-      @hashtags = tag_topics.each { |tag| @bookmark.hashtags.find_or_create_by(topic: tag) }
+      tag_topics.each { |tag| @bookmark.hashtags.find_or_create_by(topic: tag) }
+      @bookmark.user = current_user
+      @bookmark.save!
       respond_with @bookmark
     else
       head :unauthorized
     end
   end
 
-  private
+  # private
 
     def bookmark_params
-      params.require(:bookmark).permit(:url, :title, :description, :tags)
+      params.require(:bookmark).permit(:url, :title, :description, :hashtags)
     end
 
     def tag_topics
-      if params[:tags] && params[:tags] != ""
-        params[:tags].downcase.split(", ")
+      if params[:hashtags] && params[:hashtags] != ""
+        params[:hashtags].downcase.split(/[\s,]+/)
       else
-        ["random"]
+        ["general"]
       end
     end
+
 end

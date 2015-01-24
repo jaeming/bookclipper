@@ -2,7 +2,10 @@
 <h3>{{topic}}</h3>
 <br>
 {{#each bookmarks}}
-  <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
+  <h5>{{title}}</h5>
+  {{#link-to 'bookmarks.show' this}}
+    <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
+  {{/link-to}}
   <p>{{link-to url 'bookmarks.show' this}}</p>
 {{/each}}
 

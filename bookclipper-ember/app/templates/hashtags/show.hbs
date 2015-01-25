@@ -1,12 +1,17 @@
-<small>{{bookmarks.length}} bookmarks</small>
-<h3>{{topic}}</h3>
-<br>
+<p>{{bookmarks.length}} bookmarks clipped under #{{topic}}</p>
 {{#each bookmarks}}
-  <h5>{{title}}</h5>
-  {{#link-to 'bookmarks.show' this}}
-    <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
-  {{/link-to}}
-  <p>{{link-to url 'bookmarks.show' this}}</p>
+  <div class='columns medium-3'>
+    <img {{bind-attr src="bookmark_img"}} alt='' class='bookmark-img'>
+    <h6><a {{bind-attr href="url"}}>Visit link</a></h6>
+    <small class='small'>Clipped by {{#link-to 'users.show' this.user}} {{user.name}} {{/link-to}}</small>
+  </div>
+  <div class="columns medium-8">
+    <br>
+    <h5>{{title}}</h5>
+    <p>{{description}}</p>
+    <p class='small'>{{url}}</p>
+  </div>
 {{/each}}
+
 
 

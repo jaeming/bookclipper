@@ -1,0 +1,12 @@
+<div class='row'>
+  {{#if authenticated}}
+    <p class="right">signed in as {{#link-to 'users.account'}} {{user_name}} {{/link-to}}</p>
+  {{else}}
+    <p class="right">
+      {{link-to 'Sign Up' 'users.new'}} or
+      {{link-to 'Log In' 'login'}}
+    </p>
+  {{/if}}
+  <hr>
+</div>
+{{outlet}}

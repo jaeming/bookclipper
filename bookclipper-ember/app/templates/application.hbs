@@ -1,31 +1,6 @@
-
 <div class="row">
   <h2 id='title'>Welcome to Bookclipper</h2>
-
   {{link-to 'Bookmarks' 'bookmarks' tagName='button' class="button tiny"}}
   {{link-to 'Hashtags' 'hashtags' tagName='button' class="button tiny"}}
-  <br>
-  {{link-to 'Sign Up' 'users.new'}} or
-  {{link-to 'Log In' 'login'}}
-  <br>
-<hr>
-
-
-{{!-- {{#if session.isAuthenticated}}
-  <a {{ action 'invalidateSession' }}>Logout</a>
-{{else}}
-  <a {{ action 'authenticateSession' }}>Login</a>
-{{/if}} --}}
-
-{{#if session.isAuthenticated}}
-  <a {{ action 'invalidateSession' }}>Logout</a>
-{{else}}
-  {{#link-to 'login'}}Login{{/link-to}}
-{{/if}}
-<hr>
-  {{outlet}}
-  <hr>
-  <small>
-    Website thumbnails by <a href="http://www.bitpixels.com/">BitPixels</a>
-  </small>
 </div>
+{{outlet}}

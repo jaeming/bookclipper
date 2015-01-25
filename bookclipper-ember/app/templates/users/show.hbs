@@ -1,9 +1,14 @@
-<p>
-  {{name}}
-  <small>
-    {{bookmarks.length}} bookmarks
-  </small>
-</p>
-{{#each bookmarks}}
-  {{link-to title 'bookmarks.show' this}}
-{{/each}}
+<div class="columns medium-8">
+  <h5>
+    {{name}}
+    <small>
+      {{bookmarks.length}} bookmarks
+    </small>
+  </h5>
+  {{#each bookmarks}}
+    <ul>
+      <li>{{link-to title 'bookmarks.show' this}}</li>
+    </ul>
+  {{/each}}
+
+</div>

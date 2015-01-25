@@ -1,8 +1,4 @@
-<hr>
-{{#link-to 'bookmarks.new' class="tiny round button"}}Create New{{/link-to}}
-<br>
-<div class="row">
-  <div class="columns medium-6">
+<div class="columns medium-6">
     {{#each}}
       <h5>{{title}}</h5>
       {{#link-to 'bookmarks.show' this}}
@@ -17,4 +13,3 @@
       <br><br>
     {{/each}}
   </div>
-</div>

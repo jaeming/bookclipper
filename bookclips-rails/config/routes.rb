@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :hashtags
   resources :bookmarks
   resources :users, except: [:destroy]
-  get 'sessions/current' => 'sessions#show_current_user'
+  get '/currentuser' => 'sessions#show_current_user'
   get :csrf, to: 'csrf#index'
 
   root 'bookmarks#index'

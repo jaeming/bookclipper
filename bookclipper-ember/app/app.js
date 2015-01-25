@@ -17,14 +17,4 @@ setCsrfUrl('/csrf');
 loadInitializers(App, config.modulePrefix);
 loadInitializers(App, 'rails-csrf');
 
-
-
-
-
 export default App;
-
-// var response = '{"result":true,"count":1}';
-// var obj = $.parseJSON(response);
-// alert(obj.result); //true
-// alert(obj.count); //1
-

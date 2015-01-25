@@ -22,8 +22,8 @@ module.exports = function(environment) {
 
 
   ENV['simple-auth'] = {
-  store: 'simple-auth-session-store:local-storage'
-}
+    authorizer: 'simple-auth-authorizer:devise'
+  };
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;

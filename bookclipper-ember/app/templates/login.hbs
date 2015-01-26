@@ -1,12 +1,11 @@
 <div class="row">
-  <hr>
-  <div class="columns medium-8">
+  <div class="columns medium-5">
     <form {{action 'authenticate' on='submit'}}>
       <label for="identification">Login</label>
       {{input value=identification placeholder='Enter Login'}}
       <label for="password">Password</label>
       {{input value=password placeholder='Enter Password' type='password'}}
-      <button type="submit" class="tiny button">Login</button>
+      <button type="submit" class="tiny round button alert">Login</button>
     </form>
   </div>
 </div>

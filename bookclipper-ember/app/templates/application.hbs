@@ -2,5 +2,17 @@
   <h2 id='title'>Welcome to Bookclipper</h2>
   {{link-to 'Bookmarks' 'bookmarks' tagName='button' class="button tiny"}}
   {{link-to 'Hashtags' 'hashtags' tagName='button' class="button tiny"}}
+  <button class='button tiny'>More soon</button>
+</div>
+<div class='row'>
+  {{#if authenticated}}
+    <p class="right small">signed in as {{#link-to 'users.account'}} {{user_name}} {{/link-to}}</p>
+  {{else}}
+    <p class="right">
+      {{link-to 'Sign Up' 'users.new'}} or
+      {{link-to 'Log In' 'login'}}
+    </p>
+  {{/if}}
+  <hr>
 </div>
 {{outlet}}

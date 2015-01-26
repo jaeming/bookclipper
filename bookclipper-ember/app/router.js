@@ -14,7 +14,6 @@ Router.map(function() {
     this.route('show', {path: ':hashtag_id'});
   });
   this.resource('sessions', function() {
-    this.route('current');
   });
   this.route('login');
   this.resource('users', function() {

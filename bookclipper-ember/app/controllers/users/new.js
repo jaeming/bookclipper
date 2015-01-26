@@ -11,6 +11,7 @@ export default Ember.Controller.extend({
 
       newUser.save();
       this.transitionToRoute('bookmarks');
+      this.get('target.router').refresh();
     }
   }
 });

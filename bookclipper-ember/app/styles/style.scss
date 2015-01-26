@@ -1,18 +1,23 @@
 button, .button {
-  color: tomato;
-  border: 3px solid tomato;
-  background: transparent; }
+  color: #fff;
+  background: #60b5e0;
+  transition: all 250ms ease;
+  }
   button:hover, .button:hover {
-    background: tomato; }
+    background: #4187a3;
+  }
   button:focus, .button:focus {
-    border: 3px solid #49aee3; }
+    border: 4px solid #eaeaea;
+  }
 
 *:focus {
-  outline: 0; }
+  outline: 0;
+}
 
 .bookmark-img {
   border: 5px solid #eaeaea;
-  border-radius: 9px; }
+  border-radius: 9px;
+}
 
 .small {
   font-size: .7rem;

@@ -4,12 +4,22 @@
       {{#link-to 'bookmarks.show' this}}
         <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
       {{/link-to}}
+      <button {{action 'clipIt' bookmark}} >Clip it!</button>
       <br>
       {{#each hashtags}}
-        <small>#{{topic}}</small>
+        <small>
+          {{#link-to 'hashtags.show' this}}#{{topic}}{{/link-to}}
+          &nbsp;
+        </small>
       {{/each}}
       <br>
-      <small class='small'>Clipped by {{#link-to 'users.show' this.user}} {{user.name}} {{/link-to}}</small>
+      <small>Clipped by:</small>
+      {{#each users}}
+        <small class='small'>
+          [{{#link-to 'users.show' this}} {{name}} {{/link-to}}]
+          &nbsp;
+        </small>
+      {{/each}}
       <br><br>
     {{/each}}
   </div>

@@ -26,52 +26,54 @@ bookmarks = Bookmark.create([{
     title: 'Benji Dalton\'s Blog',
     description: 'The blog of Benji Dalton',
     hashtags: hashtags.sample(3),
-    user: users.sample
+    users: users.sample(1)
   },
   {
     url: 'http://railscasts.com',
     title: 'Rails Casts',
     description: 'Ryan Bates reigns in Rails',
     hashtags: hashtags.sample(3),
-    user: users.sample
+    users: users.sample(2)
   },
   {
     url: 'http://bloc.io',
     title: 'Bloc Education',
     description: 'Learn to code, etc...',
     hashtags: hashtags.sample(3),
-    user: users.sample
+    users: users.sample(3)
   },
   {
     url: 'http://foundation.zurb.com',
     title: 'Zurb Foundation',
     description: 'The 2nd most popular framework for front-ends',
     hashtags: hashtags.sample(3),
-    user: users.sample
+    users: users.sample(4)
   },
   {
     url: 'http://crunchyroll.com',
     title: 'crunchyroll anime',
     description: 'Watch it now!',
     hashtags: hashtags.sample(3),
-    user: users.sample
+    users: users.sample(1)
   },
   {
     url: 'http://codeschool.com',
     title: 'The school of code',
     description: 'We teach you code stuffs',
     hashtags: hashtags.sample(3),
-    user: users.sample
+    users: users.sample(1)
   },
   {
     url: 'http://reddit.com',
     title: 'lots of memes and AMA\'s',
     description: 'The largest user community of something.',
     hashtags: hashtags.sample(3),
-    user: users.sample
+    users: users.sample(4)
   }])
 
-bookmark = Bookmark.all
+bookmarks = Bookmark.all
+
+
 
 puts "Seeds generated"
 puts "#{User.count} Users created"

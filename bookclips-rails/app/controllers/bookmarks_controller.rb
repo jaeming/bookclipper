@@ -20,12 +20,17 @@ class BookmarksController < ApplicationController
     if current_user
       @bookmark = Bookmark.create(bookmark_params)
       tag_topics.each { |tag| @bookmark.hashtags.find_or_create_by!(topic: tag) }
-      @bookmark.user = current_user
+      # @bookmark.user = current_user
       @bookmark.save!
       respond_with @bookmark
     else
       head :unauthorized
     end
+  end
+
+
+  def favorite
+    binding.pry
   end
 
   # private

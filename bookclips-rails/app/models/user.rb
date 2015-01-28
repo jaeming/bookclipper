@@ -4,7 +4,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
   has_many :authorizations, :dependent => :destroy
-  has_many :bookmarks
+  has_many :favorites
+  has_many :bookmarks, through: :favorites
+
   # after_create :add_name_if_null
 
   # def add_name_if_null

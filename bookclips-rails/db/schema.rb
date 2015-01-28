@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150116083703) do
+ActiveRecord::Schema.define(version: 20150127113817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,14 @@ ActiveRecord::Schema.define(version: 20150116083703) do
 
   add_index "bookmarks_hashtags", ["bookmark_id", "hashtag_id"], name: "index_bookmarks_hashtags_on_bookmark_id_and_hashtag_id", using: :btree
   add_index "bookmarks_hashtags", ["hashtag_id", "bookmark_id"], name: "index_bookmarks_hashtags_on_hashtag_id_and_bookmark_id", using: :btree
+
+  create_table "favorites", force: true do |t|
+    t.integer "user_id"
+    t.integer "bookmark_id"
+  end
+
+  add_index "favorites", ["bookmark_id"], name: "index_favorites_on_bookmark_id", using: :btree
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "hashtags", force: true do |t|
     t.string   "topic"

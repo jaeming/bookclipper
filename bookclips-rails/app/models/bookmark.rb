@@ -3,7 +3,8 @@ class Bookmark < ActiveRecord::Base
   require 'json'
   require 'jsonpath'
   has_and_belongs_to_many :hashtags
-  belongs_to :user
+  has_many :favorites
+  has_many :users, through: :favorites
   validates :url, presence: true
   validates_format_of :url, :with => URI::regexp(%w(http https))
   after_create :set_bookmark_meta

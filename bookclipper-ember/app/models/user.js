@@ -5,5 +5,5 @@ export default DS.Model.extend({
   password: DS.attr('string'),
   password_confirmation: DS.attr('string'),
   name: DS.attr('string'),
-  bookmarks: DS.hasMany('Bookmark', {async: true})
+  bookmarks: DS.attr()
 });

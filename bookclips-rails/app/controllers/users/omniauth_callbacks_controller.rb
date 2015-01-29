@@ -14,7 +14,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
           user = User.create({
             name: name,
             password: Devise.friendly_token[0,8],
-            email: "#{UUIDTools::UUID.random_create}@shufflebox.org
+            email: "#{UUIDTools::UUID.random_create}@shufflebox.org"
           })
         end
       else

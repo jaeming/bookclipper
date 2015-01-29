@@ -2,10 +2,23 @@
 {{#each bookmarks}}
 <div class="row">
   <div class='columns medium-3'>
+    {{#each hashtags}}
+      <small>
+        {{#link-to 'hashtags.show' this}}#{{topic}}{{/link-to}}
+        &nbsp;
+      </small>
+    {{/each}}
+    <br>
     <img {{bind-attr src="bookmark_img"}} alt='' class='bookmark-img'>
     <h6><a {{bind-attr href="url"}}>Visit link</a></h6>
-    <small class='small'>Clipped by {{#link-to 'users.show' this.user}} {{user.name}} {{/link-to}}</small>
+    <small>Clipped by</small>
+    {{#each users}}
+      <small class='small grey'>
+        {{#link-to 'users.show' this.user}}&nbsp;{{name}}&nbsp;{{/link-to}}
+      </small>
+    {{/each}}
   </div>
+  <br>
   <div class="columns medium-8">
     <h5>{{title}}</h5>
     <p>{{description}}</p>

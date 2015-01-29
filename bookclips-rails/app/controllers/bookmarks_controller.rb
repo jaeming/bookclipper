@@ -20,7 +20,7 @@ class BookmarksController < ApplicationController
     if current_user
       @bookmark = Bookmark.create(bookmark_params)
       tag_topics.each { |tag| @bookmark.hashtags.find_or_create_by!(topic: tag) }
-      # @bookmark.user = current_user
+      @bookmark.users << current_user
       @bookmark.save!
       respond_with @bookmark
     else
@@ -36,12 +36,12 @@ class BookmarksController < ApplicationController
   # private
 
     def bookmark_params
-      params.require(:bookmark).permit(:url, :title, :description, :hashtags)
+      params.require(:bookmark).permit(:url, :title, :description, :tags)
     end
 
     def tag_topics
-      if params[:hashtags] && params[:hashtags] != ""
-        params[:hashtags].downcase.split(/[\s,]+/)
+      if params[:tags] && params[:tags] != ""
+        params[:tags].downcase.split(/[\s,]+/)
       else
         ["general"]
       end

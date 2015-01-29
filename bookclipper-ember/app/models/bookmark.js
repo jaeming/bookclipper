@@ -5,6 +5,7 @@ export default DS.Model.extend({
   url: DS.attr('string'),
   title: DS.attr('string'),
   description: DS.attr('string'),
+  tags: DS.attr('string'),
   hashtags: DS.hasMany('hashtag', { async: true }),
   users: DS.hasMany('user', { async: true }),
   bookmark_img: Ember.computed( "url", function() {

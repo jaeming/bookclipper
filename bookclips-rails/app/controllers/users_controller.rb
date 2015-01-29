@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   respond_to :json
-  before_action :authenticate_user!, except: [:show, :create]
+  before_action :authenticate_user!, except: [:create, :show, :index]
 
   def index
     @users = User.all

@@ -30,7 +30,7 @@ class BookmarksController < ApplicationController
 
 
   def favorite
-    binding.pry
+
   end
 
   # private

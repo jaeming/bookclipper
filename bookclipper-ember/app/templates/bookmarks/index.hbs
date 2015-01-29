@@ -4,7 +4,8 @@
       {{#link-to 'bookmarks.show' this}}
         <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
       {{/link-to}}
-      <button {{action 'clipIt' bookmark}} >Clip it!</button>
+
+      <a href='' {{action 'clipIt' bookmark}}>{{fa-icon "fa-check-circle-o" size="lg"}} Clip it!</a>
       <br>
       {{#each hashtags}}
         <small>
@@ -15,9 +16,8 @@
       <br>
       <small>Clipped by:</small>
       {{#each users}}
-        <small class='small'>
-          [{{#link-to 'users.show' this}} {{name}} {{/link-to}}]
-          &nbsp;
+        <small class='small grey'>
+          {{#link-to 'users.show' this}}&nbsp;{{name}}{{/link-to}}
         </small>
       {{/each}}
       <br><br>

@@ -1,3 +1,7 @@
 {{#each}}
-  {{#link-to 'users.show' this}}<p class='small'>{{name}}</p>{{/link-to}}
+  <p>
+  {{#link-to 'users.show' this}}{{name}}{{/link-to}}
+  <small>{{bookmarks.length}} bookclips</small>
+  </p>
+
 {{/each}}

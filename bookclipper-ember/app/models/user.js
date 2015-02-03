@@ -1,9 +1,5 @@
 import DS from 'ember-data';
 
-// DS.RESTAdapter.reopen({
-//   coalesceFindRequests: true
-// });
-
 export default DS.Model.extend({
   email: DS.attr('string'),
   password: DS.attr('string'),

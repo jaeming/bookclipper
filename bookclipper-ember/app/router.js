@@ -15,8 +15,8 @@ Router.map(function() {
   });
   this.resource('sessions', function() {
   });
-  this.route('login');
   this.resource('users', function() {
+    this.route('login');
     this.route('show', {path: ':user_id'});
     this.route('new');
     this.route('account');

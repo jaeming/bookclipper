@@ -4,4 +4,5 @@ class HashtagSerializer < ActiveModel::Serializer
   def bookmarks
     object.bookmark_ids
   end
+
 end

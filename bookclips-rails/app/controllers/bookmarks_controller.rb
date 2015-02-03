@@ -2,7 +2,7 @@ class BookmarksController < ApplicationController
   respond_to :json
 
   def index
-    @bookmarks = Bookmark.all
+    @bookmarks = Bookmark.includes(:hashtags, :users).all
     render json: @bookmarks
   end
 

@@ -1,9 +1,9 @@
 <div class="row">
   <div class="columns medium-5">
-    <form {{action 'authenticate' on='submit'}}>
-      <label for="identification">Login</label>
-      {{input value=identification placeholder='Enter Login'}}
-      <label for="password">Password</label>
+    <form {{action 'logIn' on='submit'}}>
+      <label>Log in</label>
+      {{input value=email placeholder='Enter Login'}}
+      <label>Password</label>
       {{input value=password placeholder='Enter Password' type='password'}}
       <button type="submit" class="tiny round button alert">Login</button>
     </form>

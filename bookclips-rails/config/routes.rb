@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     }
 
   get 'sessions/current' => 'sessions#show_current_user'
+  get 'users/bookmarks' => 'users#user_bookmarks'
   get :csrf, to: 'csrf#index'
   post '/favorite' => 'bookmarks#favorite'
 

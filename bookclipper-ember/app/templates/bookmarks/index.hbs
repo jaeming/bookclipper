@@ -1,25 +1,25 @@
 <div class="columns medium-6">
-    {{#each}}
-      <h5>{{title}}</h5>
-      {{#link-to 'bookmarks.show' this}}
-        <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
-      {{/link-to}}
+  {{#each}}
+    <h5>{{title}}</h5>
+    {{#link-to 'bookmarks.show' this}}
+      <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
+    {{/link-to}}
 
-      <a href='' {{action 'clipIt' bookmark}}>{{fa-icon "fa-check-circle-o" size="lg"}} Clip it!</a>
-      <br>
-      {{#each hashtags}}
-        <small>
-          {{#link-to 'hashtags.show' this}}#{{topic}}{{/link-to}}
-          &nbsp;
-        </small>
-      {{/each}}
-      <br>
-      <small>Clipped by:</small>
-      {{#each users}}
-        <small class='small grey'>
-          {{#link-to 'users.show' this}}&nbsp;{{name}}{{/link-to}}
-        </small>
-      {{/each}}
-      <br><br>
+    <a href='' {{action 'clipIt'}}>{{fa-icon "fa-check-circle-o" size="lg"}} Clip it!</a>
+    <br>
+    {{#each hashtags}}
+      <small>
+        {{#link-to 'hashtags.show' this}}#{{topic}}{{/link-to}}
+        &nbsp;
+      </small>
     {{/each}}
-  </div>
+    <br>
+    <small>Clipped by:</small>
+    {{#each users}}
+      <small class='small grey'>
+        {{#link-to 'users.show' this}}&nbsp;{{name}}{{/link-to}}
+      </small>
+    {{/each}}
+    <br><br>
+  {{/each}}
+</div>

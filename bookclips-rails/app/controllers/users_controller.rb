@@ -12,6 +12,10 @@ class UsersController < ApplicationController
     render json: @user
   end
 
+  def user_bookmarks
+    render json: current_user
+  end
+
   def create
     @user = User.new(user_params)
 

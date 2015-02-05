@@ -29,11 +29,7 @@ class BookmarksController < ApplicationController
   end
 
 
-  def favorite
-
-  end
-
-  # private
+  private
 
     def bookmark_params
       params.require(:bookmark).permit(:url, :title, :description, :tags)

@@ -10,6 +10,6 @@ export default Ember.ArrayController.extend({
       success:function(data) { console.log(data); },
       error: function() { alert('something bad happened'); }
       });
-    }
+    },
   }
 });

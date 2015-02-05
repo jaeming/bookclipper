@@ -8,9 +8,9 @@ export default Ember.ObjectController.extend({
         type: 'DELETE',
         success: function(result) {
           console.log(result);
+          location.reload();
         }
       });
-      return false;
     }
   }
 });

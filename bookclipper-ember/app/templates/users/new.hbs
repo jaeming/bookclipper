@@ -1,8 +1,5 @@
 <div class="columns medium-6">
   <h3>Sign up</h3>
-
-  <a href="http://localhost:3000/users/auth/twitter">Log in with Twitter</a>
-
   <form {{action "save" on="submit"}}>
     <label>Email
       {{input value=email placeholder='A valid email'}}
@@ -16,7 +13,7 @@
     <label>Confirm password
       {{input value=password_confirmation placeholder='Confirm Password' type='password'}}
     </label>
-    <br>
-    <input type="submit" value="save" class="button tiny" />
+    <input type="submit" value="save" class="button tiny round alert" />
   </form>
+  <a href="http://localhost:3000/users/auth/twitter">{{fa-icon "fa-twitter" size="lg"}} <small>Log in with Twitter</small></a>
 </div>

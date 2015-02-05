@@ -16,9 +16,3 @@ export default Ember.Route.extend({
 });
 
 
-//
-// export default Ember.Route.extend({
-// model: function() {
-//   return Ember.$.getJSON('/sessions/current');
-//   }
-// });

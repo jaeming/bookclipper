@@ -1,11 +1,18 @@
 <div class="row">
   <div class="columns medium-5">
-    <form {{action 'logIn' on='submit'}}>
-      <label>Log in</label>
-      {{input value=email placeholder='Enter Login'}}
-      <label>Password</label>
-      {{input value=password placeholder='Enter Password' type='password'}}
-      <button type="submit" class="tiny round button alert">Login</button>
-    </form>
+    {{#if authenticated}}
+      <p>You're logged in now. Create a new Bookclip:</p>
+      {{#link-to 'bookmarks.new' class="tiny round button alert"}}Create New{{/link-to}}
+    {{else}}
+      <h3>Sign up</h3>
+      <form {{action 'logIn' on='submit'}}>
+        <label>Log in</label>
+        {{input value=email placeholder='Enter Login'}}
+        <label>Password</label>
+        {{input value=password placeholder='Enter Password' type='password'}}
+        <button type="submit" class="tiny round button alert">Login</button>
+      </form>
+      <a href="http://localhost:3000/users/auth/twitter">{{fa-icon "fa-twitter" size="lg"}} <small>Log in with Twitter</small></a>
+    {{/if}}
   </div>
 </div>

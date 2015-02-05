@@ -7,11 +7,16 @@ export default Ember.Controller.extend({
         name: this.get('name'),
         password: this.get('password'),
         password_confirmation: this.get('password_confirmation'),
+      success:function(data) {
+        console.log(data);
+      },
+      error: function() { alert('something bad happened'); }
       });
+      newUser.save().then(function (){
+      window.location.href = 'bookmarks';
+  });
 
-      newUser.save();
-      this.transitionToRoute('bookmarks');
-      this.get('target.router').refresh();
+
     }
   }
 });

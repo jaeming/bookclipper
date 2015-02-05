@@ -6,6 +6,9 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('app', function() {
+
+
   this.resource('bookmarks', function() {
     this.route('show', {path: ':bookmark_id'});
     this.route('new');
@@ -14,6 +17,7 @@ Router.map(function() {
     this.route('show', {path: ':hashtag_id'});
   });
   this.resource('sessions', function() {
+    this.route('current');
   });
   this.resource('users', function() {
     this.route('login');
@@ -21,6 +25,8 @@ Router.map(function() {
     this.route('new');
     this.route('account');
   });
+});
+
 });
 
 export default Router;

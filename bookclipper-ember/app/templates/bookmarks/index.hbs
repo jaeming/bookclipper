@@ -4,8 +4,10 @@
     {{#link-to 'bookmarks.show' this}}
       <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
     {{/link-to}}
-
-    <a href='' {{action 'clipIt'}}>{{fa-icon "fa-check-circle-o" size="lg"}} Clip it!</a>
+{{!--     <h1>{{editable}}</h1> --}}
+      {{#if editable}}
+        <a href='' {{action 'clipIt' id}}>{{fa-icon "fa-check-circle-o" size="lg"}} Clip it!</a>
+      {{/if}}
     <br>
     {{#each hashtags}}
       <small>

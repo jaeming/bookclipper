@@ -1,8 +1,10 @@
 <div class="row">
   <h2 id='title'>Welcome to Bookclipper</h2>
-  {{link-to 'Community Bookmarks' 'bookmarks' tagName='button' class="button tiny"}}
+  {{link-to 'All Bookclips' 'bookmarks' tagName='button' class="button tiny"}}
+  {{#if authenticated}}
+    {{link-to 'My Bookclips' 'users.show' 'bookmarks' tagName='button' class="button tiny"}}
+  {{/if}}
   {{link-to 'Hashtags' 'hashtags' tagName='button' class="button tiny"}}
-  {{link-to 'My Bookclips' 'users.show' 'bookmarks' tagName='button' class="button tiny"}}
   {{link-to 'Users' 'users' tagName='button' class="button tiny"}}
 </div>
 <div class='row'>

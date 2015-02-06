@@ -1,13 +1,17 @@
 import Ember from 'ember';
-export default Ember.Controller.extend({
+export default Ember.ObjectController.extend({
+  queryParams: ['url'],
+  url: null,
   actions: {
     save: function() {
       var _this = this;
-      this.get('model').save().then(function(bookmark) {
+      var newBookmark = this.store.createRecord('bookmark', {
+        url: this.get('url'),
+        tags: this.get('tags'),
+      });
+      newBookmark.save().then(function(bookmark) {
         _this.transitionToRoute('bookmarks.show', bookmark);
       });
-
-      return false;
+      }
     }
-  }
-});
+  });

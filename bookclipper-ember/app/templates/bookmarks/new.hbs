@@ -1,6 +1,21 @@
 <h3>New Bookclip</h3>
 <div class="row">
   <div class="columns medium-7">
-    {{partial "bookmarks/form"}}
+    {{#if authenticated}}
+      {{partial "bookmarks/form"}}
+    {{else}}
+      <p>You're currently no logged in</p>
+      {{link-to 'Sign Up' 'users.new'}} or
+      {{link-to 'Log In' 'users.login'}}
+    {{/if}}
+  </div>
+  <div class="columns medium-5">
+    <div class="panel">
+      <h3>Try our bookmarklet!</h3>
+      <p>Drag the 'Clip it!' button to your browser's bookmark bar. Then click it whenever you find yourself on a site you want to save to your bookmarks.</p>
+      <a href="javascript:(function(){
+    location.href='http://localhost:4200/bookmarks/new?url='+encodeURIComponent(location.href)
+  })();" class="button round alert">Clip it!</a><small class="small">  {{fa-icon "fa-long-arrow-left" size="lg"}} Drag to bookmarks bar</small>
+  </div>
   </div>
 </div>

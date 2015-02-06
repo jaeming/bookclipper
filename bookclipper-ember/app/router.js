@@ -6,11 +6,10 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('app', function() {
+  // this.route('app', function() {
     this.resource('bookmarks', function() {
       this.route('show', {path: ':bookmark_id'});
       this.route('new');
-      this.route('user');
     });
     this.resource('hashtags', function() {
       this.route('show', {path: ':hashtag_id'});
@@ -24,7 +23,7 @@ Router.map(function() {
       this.route('new');
       this.route('account');
     });
-  });
+  // });
 });
 
 export default Router;

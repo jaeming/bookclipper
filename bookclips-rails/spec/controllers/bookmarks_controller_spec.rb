@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe BookmarksController, :type => :controller do
+  include Devise::TestHelpers
+
+  before do
+    @user = create(:user)
+    sign_in @user
+  end
 
   it "returns index of Bookmarks in JSON" do
     10.times { bookmarks = create(:bookmark) }
@@ -33,7 +39,8 @@ RSpec.describe BookmarksController, :type => :controller do
     bookmark = Bookmark.last
     hashtag = bookmark.hashtags[0]
 
-    expect(hashtag.topic).to eq("random")
+    expect(hashtag.topic).to eq("general")
+
   end
 
 end

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :hashtags
   resources :bookmarks
   resources :users, except: [:destroy]
+  resources :favorites, only: [:create]
 
   root 'bookmarks#index'
 end

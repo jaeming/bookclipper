@@ -1,13 +1,17 @@
 <div class="columns medium-6">
   {{#each}}
-    <h5>{{title}}</h5>
+    <h5 class="inline-bold">{{title}} </h5>
+    {{#if authenticated}}
+      {{#if editable}}
+        <a href='' {{action 'remove' id}} class="action">{{fa-icon "fa-chain-broken"}} Unclip</a>
+      {{else}}
+        <a href='' {{action 'clipIt' id}} class="action">{{fa-icon "fa-bookmark-o"}} Clip it!</a>
+      {{/if}}
+    {{/if}}
+    <br>
     {{#link-to 'bookmarks.show' this}}
       <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
     {{/link-to}}
-{{!--     <h1>{{editable}}</h1> --}}
-      {{#if editable}}
-        <a href='' {{action 'clipIt' id}}>{{fa-icon "fa-check-circle-o" size="lg"}} Clip it!</a>
-      {{/if}}
     <br>
     {{#each hashtags}}
       <small>

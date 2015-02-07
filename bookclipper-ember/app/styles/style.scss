@@ -17,6 +17,7 @@ button, .button {
 .bookmark-img {
   border: 5px solid #eaeaea;
   border-radius: 9px;
+  margin-top: 10px;
 }
 
 .small {
@@ -60,5 +61,19 @@ z-index: 1000;
   text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
   background: #58c1e8;
   border: solid 5px #eaeaea;
+}
+
+.action {
+  color: #f2aeae;
+  font-size: .85rem;
+  transition: all 350ms ease;
+  &:hover {
+    color: #ed7e6d;
+  }
+}
+
+.inline-bold {
+  margin: 0;
+  display: inline;
 }
 

@@ -5,7 +5,15 @@
   {{/each}}
   <br>
   <img {{bind-attr src="bookmark_img"}} alt='' class='bookmark-img'>
-  <h6><a {{bind-attr href="url"}}>Visit link</a></h6>
+  <h6 class="inline-bold"><a {{bind-attr href="url"}}>Visit link</a></h6>
+  {{#if authenticated}}
+    {{#if editable}}
+      <a href='' {{action 'remove' id}} class="action">{{fa-icon "fa-chain-broken"}} Unclip</a>
+    {{else}}
+      <a href='' {{action 'clipIt' id}} class="action">{{fa-icon "fa-bookmark-o"}} Clip it!</a>
+    {{/if}}
+  {{/if}}
+  <br>
   <small>Clipped by:</small>
   {{#each users}}
     <small class='small grey'>

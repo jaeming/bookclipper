@@ -8,16 +8,18 @@ export default DS.Model.extend({
   tags: DS.attr('string'),
   hashtags: DS.hasMany('hashtag', { async: true }),
   users: DS.hasMany('user', { async: true }),
+  authenticated: DS.attr('boolean'),
+  editable: DS.attr('boolean'),
   bookmark_img: Ember.computed( "url", function() {
     return "http://img.bitpixels.com/getthumbnail?code=21000&size=200&url=" + this.get("url");
   }),
-  editable: Ember.computed( function() {
-      return this.store.find('session', 'current').then(
-      function(current) {
-        // debugger;
-        console.log(current.get('authenticated'));
-        return current.get('authenticated');
-      }
-    );
-  }),
+  // editable: Ember.computed( function() {
+  //     return this.store.find('session', 'current').then(
+  //     function(current) {
+  //       // debugger;
+  //       console.log(current.get('authenticated'));
+  //       current.get('authenticated');
+  //     }
+  //   );
+  // }),
 });

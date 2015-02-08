@@ -1,6 +1,6 @@
 import Ember from 'ember';
-export default Ember.ArrayController.extend({
-  needs: ['application'],
+
+export default Ember.ObjectController.extend({
   actions: {
     clipIt: function(id) {
       Ember.$.ajax({

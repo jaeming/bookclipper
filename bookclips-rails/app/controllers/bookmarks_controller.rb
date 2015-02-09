@@ -27,6 +27,17 @@ class BookmarksController < ApplicationController
     end
   end
 
+  def update
+    if current_user
+      @bookmark = Bookmark.find(params[:id])
+      @bookmark.update_attributes(bookmark_params)
+      @bookmark.save!
+      head :no_content
+    else
+      head :unauthorized
+    end
+  end
+
   private
 
     def bookmark_params

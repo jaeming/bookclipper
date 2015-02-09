@@ -14,6 +14,7 @@
     {{#if authenticated}}
       {{#if editable}}
         <a href='' {{action 'remove' id}} class="action">{{fa-icon "fa-chain-broken"}} Unclip</a>
+        &nbsp;{{#link-to 'bookmarks.update' this class="action"}}{{fa-icon "fa-pencil-square-o"}} Edit{{/link-to}}
       {{else}}
         <a href='' {{action 'clipIt' id}} class="action">{{fa-icon "fa-bookmark-o"}} Clip it!</a>
       {{/if}}

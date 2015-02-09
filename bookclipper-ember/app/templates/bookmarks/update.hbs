@@ -1,0 +1,13 @@
+<form {{action "update" on="submit"}}>
+  <label>Title:
+    {{input value=title placeholder='Title'}}
+  </label>
+  <label>Description:
+    {{textarea value=description cols="80" rows="4" placeholder='Description'}}
+  </label>
+  <label>Tags:
+    {{input value=tags placeholder='seperated by comma or space'}}
+  </label>
+  <br>
+  <input type="submit" value="update" class="button tiny" />
+</form>

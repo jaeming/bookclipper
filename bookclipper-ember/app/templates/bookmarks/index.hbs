@@ -1,17 +1,6 @@
 <div class="columns medium-6">
   {{#each}}
-    <h5 class="inline-bold">{{title}} </h5>
-    {{#if authenticated}}
-      {{#if editable}}
-        <a href='' {{action 'remove' id}} class="action">{{fa-icon "fa-chain-broken"}} Unclip</a>
-      {{else}}
-        <a href='' {{action 'clipIt' id}} class="action">{{fa-icon "fa-bookmark-o"}} Clip it!</a>
-      {{/if}}
-    {{/if}}
-    <br>
-    {{#link-to 'bookmarks.show' this}}
-      <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
-    {{/link-to}}
+    <h5 class="inline-bold">{{title}}</h5>
     <br>
     {{#each hashtags}}
       <small>
@@ -19,6 +8,19 @@
         &nbsp;
       </small>
     {{/each}}
+    <br>
+    {{#link-to 'bookmarks.show' this}}
+      <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
+    {{/link-to}}
+    <br>
+    {{#if authenticated}}
+      {{#if editable}}
+        <a href='' {{action 'remove' id}} class="action">{{fa-icon "fa-chain-broken"}} Unclip</a>
+        &nbsp;{{#link-to 'bookmarks.update' this class="action"}}{{fa-icon "fa-pencil-square-o"}} Edit{{/link-to}}
+      {{else}}
+        <a href='' {{action 'clipIt' id}} class="action">{{fa-icon "fa-bookmark-o"}} Clip it!</a>
+      {{/if}}
+    {{/if}}
     <br>
     <small>Clipped by:</small>
     {{#each users}}

@@ -8,6 +8,7 @@ class Bookmark < ActiveRecord::Base
   validates :url, presence: true
   validates_format_of :url, :with => URI::regexp(%w(http https))
   after_create :set_bookmark_meta, :set_hashtags
+  after_update :set_hashtags
 
   def set_bookmark_meta
     embedly_key = ENV['embedly_key'];

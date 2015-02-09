@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.ObjectController.extend({
   actions: {
     clipIt: function(id) {
+      var _this = this;
       Ember.$.ajax({
       url : '/favorites',
       type: 'POST',
@@ -13,12 +14,14 @@ export default Ember.ObjectController.extend({
         setTimeout(function(){
           Ember.$("#flash-wrapper").fadeOut("slow", function () {
           Ember.$("#flash-wrapper").remove();
-      }); }, 2000);
+          }); }, 2000);
+        return _this.store.find('bookmark');
       },
       error: function() { alert('something bad happened'); }
       });
     },
     remove: function(id) {
+      var _this = this;
       Ember.$.ajax({
       url : '/favorites/'+id,
       type: 'DELETE',
@@ -28,7 +31,8 @@ export default Ember.ObjectController.extend({
         setTimeout(function(){
           Ember.$("#flash-wrapper").fadeOut("slow", function () {
           Ember.$("#flash-wrapper").remove();
-      }); }, 2000);
+          }); }, 2000);
+        return _this.store.find('bookmark');
       },
       error: function() { alert('something bad happened'); }
       });

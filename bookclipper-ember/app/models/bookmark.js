@@ -13,13 +13,4 @@ export default DS.Model.extend({
   bookmark_img: Ember.computed( "url", function() {
     return "http://img.bitpixels.com/getthumbnail?code=21000&size=200&url=" + this.get("url");
   }),
-  // editable: Ember.computed( function() {
-  //     return this.store.find('session', 'current').then(
-  //     function(current) {
-  //       // debugger;
-  //       console.log(current.get('authenticated'));
-  //       current.get('authenticated');
-  //     }
-  //   );
-  // }),
 });

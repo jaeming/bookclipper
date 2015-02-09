@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Hashtag, :type => :model do
   it "creates a bookmark with multiple hashtags" do
-    hashtag1 = create(:hashtag)
-    hashtag2 = create(:hashtag, topic: "lolcats")
-    bookmark = create(:bookmark, hashtags: [hashtag1, hashtag2])
+    hashtags = "memes News, media"
+    bookmark = create(:bookmark, tags: hashtags)
+    hashtag_topics = []
+    bookmark.hashtags.each { |i| hashtag_topics << i.topic }
 
-    expect(bookmark.hashtags).to eq([hashtag1, hashtag2])
-    expect(hashtag1.bookmarks).to eq([bookmark])
+    expect(hashtag_topics).to eq(["memes", "news", "media"])
   end
 end

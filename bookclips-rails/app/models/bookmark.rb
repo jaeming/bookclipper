@@ -7,7 +7,7 @@ class Bookmark < ActiveRecord::Base
   has_many :users, through: :favorites
   validates :url, presence: true
   validates_format_of :url, :with => URI::regexp(%w(http https))
-  after_create :set_bookmark_meta
+  after_create :set_bookmark_meta, :set_hashtags
 
   def set_bookmark_meta
     embedly_key = ENV['embedly_key'];
@@ -18,6 +18,18 @@ class Bookmark < ActiveRecord::Base
     self.title = JsonPath.on(json, '$..title')[0]
     self.description = JsonPath.on(json, '$..description')[0]
     self.save!
+  end
+
+  def set_hashtags
+    tag_topics.each { |tag| self.hashtags.find_or_create_by!(topic: tag) }
+  end
+
+  def tag_topics
+    if self.tags && self.tags != ""
+      self.tags.downcase.split(/[\s,]+/)
+    else
+      ["general"]
+    end
   end
 
 end

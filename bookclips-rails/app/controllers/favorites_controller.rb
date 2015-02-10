@@ -12,8 +12,7 @@ class FavoritesController < ApplicationController
     @bookmark = Bookmark.find(params[:id])
     @bookmark.users.delete(current_user)
     @bookmark.save!
-    hashtags = []
-    hashtags |= @bookmark.hashtags
+    hashtags = @bookmark.hashtags.to_a
     @bookmark.destroy! unless @bookmark.users.any?
     hashtags.each { |tag| tag.destroy! unless tag.bookmarks.any? }
     head :no_content

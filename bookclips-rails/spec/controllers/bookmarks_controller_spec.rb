@@ -40,7 +40,16 @@ RSpec.describe BookmarksController, :type => :controller do
     hashtag = bookmark.hashtags[0]
 
     expect(hashtag.topic).to eq("general")
+  end
 
+  it "updates updates a bookmark's attributes" do
+    bookmark = create(:bookmark, title: "old title")
+    bookmark_params = {"url"=>"http://benjidalton.com", "title"=>"new title"}
+
+    put :update, id: bookmark, bookmark: bookmark_params
+    bookmark.reload
+
+    expect(bookmark.title).to eq("new title")
   end
 
 end

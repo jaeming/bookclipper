@@ -11,31 +11,19 @@ class BookmarksController < ApplicationController
     render json: @bookmark
   end
 
-  def new
-    @bookmark = Bookmark.new
-    @hashtag = Hashtag.new
-  end
-
   def create
-    if current_user
-      @bookmark = Bookmark.create(bookmark_params)
-      @bookmark.users << current_user
-      @bookmark.save!
-      respond_with @bookmark
-    else
-      head :unauthorized
-    end
+    return head :unauthorized unless current_user
+
+    @bookmark = current_user.bookmarks.create(bookmark_params)
+    respond_with @bookmark
   end
 
   def update
-    if current_user
-      @bookmark = Bookmark.find(params[:id])
-      @bookmark.update_attributes(bookmark_params)
-      @bookmark.save!
-      head :no_content
-    else
-      head :unauthorized
-    end
+    return head :unauthorized unless current_user
+
+    @bookmark = Bookmark.find(params[:id])
+    @bookmark.update_attributes(bookmark_params)
+    head :no_content
   end
 
   private

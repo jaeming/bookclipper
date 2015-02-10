@@ -16,17 +16,13 @@ RSpec.describe FavoritesController, :type => :controller do
   end
 
   it "removes a bookmark from a user's collection" do
-    bookmark1 = create(:bookmark)
-    bookmark2 = create(:bookmark)
     user = create(:user)
-    bookmark1.users |= [user]
-    bookmark2.users |= [user]
-
     sign_in user
+    bookmark1 = create(:bookmark, users: [user])
+    bookmark2 = create(:bookmark, users: [user])
 
     delete :destroy, {id: bookmark2.id}
 
-    expect(user.bookmarks).to include(bookmark1)
-    expect(user.bookmarks).not_to include(bookmark2)
+    expect(user.bookmarks).to eq([bookmark1])
   end
 end

@@ -16,11 +16,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             password: Devise.friendly_token[0,8],
             email: "#{UUIDTools::UUID.random_create}@shufflebox.org"
           })
+          user.skip_confirmation!
         end
       else
         user = current_user
       end
-
 
       ## Finally, create an authorization for the current user
       unless auth = user.authorizations.find_by_provider("twitter")

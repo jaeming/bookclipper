@@ -20,4 +20,14 @@ RSpec.describe HashtagsController, :type => :controller do
     json = JSON.parse(response.body)
     expect(JsonPath.on(json, '$..topic')).to eq(["Tech"])
   end
+
+  it "creates new hashtags" do
+    hashtag_params = {"hashtag" => {"topic"=>"memes"}, "format" => "json"}
+
+    post :create, hashtag_params
+    hashtag = Hashtag.last
+
+    expect(hashtag.topic).to eq("memes")
+  end
+
 end

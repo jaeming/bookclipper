@@ -32,9 +32,6 @@ actions: {
           Ember.$("#flash-wrapper").fadeOut("slow", function () {
           Ember.$("#flash-wrapper").remove();
           }); }, 2000);
-        //         _this.store.unloadAll('bookmark');
-        // _this.store.unloadAll('user');
-        // _this.store.unloadAll('hashtag');
         _this.store.find('bookmark');
         _this.transitionToRoute('hashtags');
       },

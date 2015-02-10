@@ -11,10 +11,6 @@ class HashtagsController < ApplicationController
     render json: @hashtag
   end
 
-  def new
-    @hashtag = Hashtag.new
-  end
-
   def create
     @hashtag = Hashtag.create(hashtag_params)
     @hashtag.save!

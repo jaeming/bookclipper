@@ -31,7 +31,10 @@ export default Ember.ArrayController.extend({
           Ember.$("#flash-wrapper").fadeOut("slow", function () {
           Ember.$("#flash-wrapper").remove();
           }); }, 2000);
-        return _this.store.find('bookmark');
+        _this.store.unloadAll('bookmark');
+        _this.store.unloadAll('user');
+        _this.store.unloadAll('hashtag');
+        _this.store.find('bookmark');
       },
       error: function() { alert('something bad happened'); }
       });

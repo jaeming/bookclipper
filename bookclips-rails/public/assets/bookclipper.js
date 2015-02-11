@@ -5,7 +5,8 @@ define("bookclipper/adapters/application",
     var DS = __dependency1__["default"];
 
     __exports__["default"] = DS.RESTAdapter.extend({
-        coalesceFindRequests: true
+        coalesceFindRequests: true,
+        namespace: 'api'
     });
   });
 define("bookclipper/app", 
@@ -210,22 +211,6 @@ define("bookclipper/components/f-tooltip",
 
     __exports__["default"] = FTooltip;
   });
-define("bookclipper/controllers/application", 
-  ["ember","simple-auth/mixins/login-controller-mixin","exports"],
-  function(__dependency1__, __dependency2__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-
-    var LoginControllerMixin = __dependency2__["default"];
-
-    __exports__["default"] = Ember.ObjectController.extend(LoginControllerMixin, {
-      authenticator: 'simple-auth-authenticator:devise'
-    });
-
-    // export default Ember.Controller.extend({
-
-    // });
-  });
 define("bookclipper/controllers/bookmarks/index", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
@@ -233,13 +218,41 @@ define("bookclipper/controllers/bookmarks/index",
     var Ember = __dependency1__["default"];
     __exports__["default"] = Ember.ArrayController.extend({
       actions: {
-        clipIt: function() {
+        clipIt: function(id) {
+          var _this = this;
           Ember.$.ajax({
-          url : '/favorites',
+          url : 'api/favorites',
           type: 'POST',
           dataType : "json",
-          data: {"id":"1"},
-          success:function(data) { console.log(data); },
+          data: {"bookmark_id": id},
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Added to your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            return _this.store.find('bookmark');
+          },
+          error: function() { alert('something bad happened'); }
+          });
+        },
+        remove: function(id) {
+          var _this = this;
+          Ember.$.ajax({
+          url : 'api/favorites/'+id,
+          type: 'DELETE',
+          dataType : "json",
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Removed from your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            _this.store.unloadAll('bookmark');
+            _this.store.unloadAll('user');
+            _this.store.unloadAll('hashtag');
+            _this.store.find('bookmark');
+          },
           error: function() { alert('something bad happened'); }
           });
         }
@@ -251,15 +264,140 @@ define("bookclipper/controllers/bookmarks/new",
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Controller.extend({
+    __exports__["default"] = Ember.ObjectController.extend({
+      queryParams: ['url'],
+      url: null,
       actions: {
         save: function() {
           var _this = this;
-          this.get('model').save().then(function(bookmark) {
+          var newBookmark = this.store.createRecord('bookmark', {
+            url: this.get('url'),
+            tags: this.get('tags'),
+          });
+          newBookmark.save().then(function(bookmark) {
             _this.transitionToRoute('bookmarks.show', bookmark);
           });
+          }
+        }
+      });
+  });
+define("bookclipper/controllers/bookmarks/show", 
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
 
-          return false;
+    __exports__["default"] = Ember.ObjectController.extend({
+    actions: {
+        clipIt: function(id) {
+          var _this = this;
+          Ember.$.ajax({
+          url : 'api/favorites',
+          type: 'POST',
+          dataType : "json",
+          data: {"bookmark_id": id},
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Added to your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            return _this.store.find('bookmark');
+          },
+          error: function() { alert('something bad happened'); }
+          });
+        },
+        remove: function(id) {
+          var _this = this;
+          Ember.$.ajax({
+          url : 'api/favorites/'+id,
+          type: 'DELETE',
+          dataType : "json",
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Removed from your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            _this.store.unloadAll('bookmark');
+            _this.store.unloadAll('user');
+            _this.store.unloadAll('hashtag');
+            _this.transitionToRoute('bookmarks');
+          },
+          error: function() { alert('something bad happened'); }
+          });
+        }
+      }
+    });
+  });
+define("bookclipper/controllers/bookmarks/update", 
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
+    __exports__["default"] = Ember.ObjectController.extend({
+      queryParams: ['url'],
+      url: null,
+      actions: {
+        update: function() {
+          var _this = this;
+          var bookmark = this.get('model');
+          var title = this.get('title');
+          var description = this.get('description');
+          var tags = this.get('tags');
+          bookmark.set('title', title);
+          bookmark.set('description', description);
+          bookmark.set('tags', tags);
+          bookmark.save().then(function(bookmark) {
+            _this.transitionToRoute('bookmarks.show', bookmark);
+          });
+          }
+        }
+      });
+  });
+define("bookclipper/controllers/hashtags/show", 
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
+
+    __exports__["default"] = Ember.ObjectController.extend({
+    actions: {
+        clipIt: function(id) {
+          var _this = this;
+          Ember.$.ajax({
+          url : 'api/favorites',
+          type: 'POST',
+          dataType : "json",
+          data: {"bookmark_id": id},
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Added to your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            return _this.store.find('bookmark');
+          },
+          error: function() { alert('something bad happened'); }
+          });
+        },
+        remove: function(id) {
+          var _this = this;
+          Ember.$.ajax({
+          url : 'api/favorites/'+id,
+          type: 'DELETE',
+          dataType : "json",
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Removed from your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            _this.store.find('bookmark');
+            _this.transitionToRoute('hashtags');
+          },
+          error: function() { alert('something bad happened'); }
+          });
         }
       }
     });
@@ -274,7 +412,7 @@ define("bookclipper/controllers/users/account",
       actions: {
         signout: function() {
           Ember.$.ajax({
-            url: '/users/sign_out',
+            url: 'api/users/sign_out',
             type: 'DELETE',
             success: function(result) {
               console.log(result);
@@ -290,14 +428,13 @@ define("bookclipper/controllers/users/login",
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-
     __exports__["default"] = Ember.ObjectController.extend({
       actions: {
         logIn: function() {
           var email = this.get('email');
           var password = this.get('password');
           Ember.$.ajax({
-          url : '/users/sign_in',
+          url : 'api/users/sign_in',
           type: 'POST',
           dataType : "json",
           data: {"user":{"email": email, "password": password}},
@@ -334,6 +471,52 @@ define("bookclipper/controllers/users/new",
       });
 
 
+        }
+      }
+    });
+  });
+define("bookclipper/controllers/users/show", 
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
+
+    __exports__["default"] = Ember.ObjectController.extend({
+       actions: {
+        clipIt: function(id) {
+          var _this = this;
+          Ember.$.ajax({
+          url : 'api/favorites',
+          type: 'POST',
+          dataType : "json",
+          data: {"bookmark_id": id},
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Added to your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            return _this.store.find('bookmark');
+          },
+          error: function() { alert('something bad happened'); }
+          });
+        },
+        remove: function(id) {
+          var _this = this;
+          Ember.$.ajax({
+          url : 'api/favorites/'+id,
+          type: 'DELETE',
+          dataType : "json",
+          success:function() {
+            Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Removed from your clips!</h3></div></div>");
+            setTimeout(function(){
+              Ember.$("#flash-wrapper").fadeOut("slow", function () {
+              Ember.$("#flash-wrapper").remove();
+              }); }, 2000);
+            _this.store.find('bookmark');
+          },
+          error: function() { alert('something bad happened'); }
+          });
         }
       }
     });
@@ -473,66 +656,12 @@ define("bookclipper/initializers/export-application-global",
       initialize: initialize
     };
   });
-define("bookclipper/initializers/simple-auth-cookie-store", 
-  ["simple-auth-cookie-store/configuration","simple-auth-cookie-store/stores/cookie","bookclipper/config/environment","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
-    "use strict";
-    var Configuration = __dependency1__["default"];
-    var Store = __dependency2__["default"];
-    var ENV = __dependency3__["default"];
-
-    __exports__["default"] = {
-      name:       'simple-auth-cookie-store',
-      before:     'simple-auth',
-      initialize: function(container, application) {
-        Configuration.load(container, ENV['simple-auth-cookie-store'] || {});
-        container.register('simple-auth-session-store:cookie', Store);
-      }
-    };
-  });
-define("bookclipper/initializers/simple-auth-devise", 
-  ["simple-auth-devise/configuration","simple-auth-devise/authenticators/devise","simple-auth-devise/authorizers/devise","bookclipper/config/environment","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
-    "use strict";
-    var Configuration = __dependency1__["default"];
-    var Authenticator = __dependency2__["default"];
-    var Authorizer = __dependency3__["default"];
-    var ENV = __dependency4__["default"];
-
-    __exports__["default"] = {
-      name:       'simple-auth-devise',
-      before:     'simple-auth',
-      initialize: function(container, application) {
-        Configuration.load(container, ENV['simple-auth-devise'] || {});
-        container.register('simple-auth-authorizer:devise', Authorizer);
-        container.register('simple-auth-authenticator:devise', Authenticator);
-      }
-    };
-  });
-define("bookclipper/initializers/simple-auth", 
-  ["simple-auth/configuration","simple-auth/setup","bookclipper/config/environment","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
-    "use strict";
-    var Configuration = __dependency1__["default"];
-    var setup = __dependency2__["default"];
-    var ENV = __dependency3__["default"];
-
-    __exports__["default"] = {
-      name:       'simple-auth',
-      initialize: function(container, application) {
-        Configuration.load(container, ENV['simple-auth'] || {});
-        setup(container, application);
-      }
-    };
-  });
 define("bookclipper/models/bookmark", 
   ["ember-data","ember","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var DS = __dependency1__["default"];
     var Ember = __dependency2__["default"];
-
-
 
     __exports__["default"] = DS.Model.extend({
       url: DS.attr('string'),
@@ -541,9 +670,11 @@ define("bookclipper/models/bookmark",
       tags: DS.attr('string'),
       hashtags: DS.hasMany('hashtag', { async: true }),
       users: DS.hasMany('user', { async: true }),
+      authenticated: DS.attr('boolean'),
+      editable: DS.attr('boolean'),
       bookmark_img: Ember.computed( "url", function() {
         return "http://img.bitpixels.com/getthumbnail?code=21000&size=200&url=" + this.get("url");
-      })
+      }),
     });
   });
 define("bookclipper/models/hashtag", 
@@ -595,12 +726,10 @@ define("bookclipper/router",
     });
 
     Router.map(function() {
-      this.route('app', function() {
-
-
-      this.resource('bookmarks', function() {
+      this.resource('bookmarks', { path: '/'}, function() {
         this.route('show', {path: ':bookmark_id'});
         this.route('new');
+        this.route('update', {path: 'update/:bookmark_id'});
       });
       this.resource('hashtags', function() {
         this.route('show', {path: ':hashtag_id'});
@@ -616,26 +745,19 @@ define("bookclipper/router",
       });
     });
 
-    });
-
     __exports__["default"] = Router;
   });
 define("bookclipper/routes/application", 
-  ["ember","simple-auth/mixins/application-route-mixin","exports"],
-  function(__dependency1__, __dependency2__, __exports__) {
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    var ApplicationRouteMixin = __dependency2__["default"];
 
-    __exports__["default"] = Ember.Route.extend(ApplicationRouteMixin);
 
     __exports__["default"] = Ember.Route.extend({
       beforeModel: function() {
         return this.csrf.fetchToken();
-      }
-    });
-
-    __exports__["default"] = Ember.Route.extend({
+      },
       model: function() {
         return this.store.find('session', 'current');
       }
@@ -650,19 +772,20 @@ define("bookclipper/routes/bookmarks/index",
     __exports__["default"] = Ember.Route.extend({
       model: function() {
         return this.store.find('bookmark');
-      }
-    });
-  });
-define("bookclipper/routes/bookmarks/new", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
+      },
 
-    __exports__["default"] = Ember.Route.extend({
-      model: function() {
-        return this.store.createRecord('bookmark');
-      }
+    // beforeModel: function() {
+    //   Ember.$.ajax({
+    //   url : '/sessions/current',
+    //   type: 'GET',
+    //   dataType : "json",
+    //   success:function(data) {
+    //     console.log(data);
+    //   },
+    //   error: function() { alert('something bad happened'); }
+    //   });
+    // }
+
     });
   });
 define("bookclipper/routes/hashtags/index", 
@@ -685,29 +808,7 @@ define("bookclipper/routes/sessions/current",
 
     __exports__["default"] = Ember.Route.extend({
       beforeModel: function() {
-
-      this.get('store').find('session', 'current'); // Find the post from the store
-      // sessions.reload(); // Force a reload
-      // return sessions;  // Return the fetched p
-
-
-
-        // var session = this.get('store').find('session', 'current'); // Find the post from the store
-        // session.reload(); // Force a reload
-        // return session;  // Return the fetched p
-        // // return this.store.find('session', 'current');
-      }
-    });
-  });
-define("bookclipper/routes/users/accountdelete", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-
-    __exports__["default"] = Ember.Route.extend({
-      model: function() {
-        return this.store.find('session', 'current');
+      this.get('store').find('session', 'current');
       }
     });
   });
@@ -723,18 +824,6 @@ define("bookclipper/routes/users/index",
       }
     });
   });
-define("bookclipper/routes/users/new", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-
-    __exports__["default"] = Ember.Route.extend({
-      // model: function() {
-      //   return this.store.find('session', 'current');
-      // }
-    });
-  });
 define("bookclipper/serializers/bookmark", 
   ["ember-data","ember","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
@@ -746,12 +835,6 @@ define("bookclipper/serializers/bookmark",
       Ember.merge(hash, this.serialize(record, options));
       }
     });
-
-    // export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
-    //   attrs: {
-    //     user: {embedded: 'always'}
-    //   }
-    // });
   });
 define("bookclipper/templates/application", 
   ["ember","exports"],
@@ -761,18 +844,30 @@ define("bookclipper/templates/application",
     __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, helper, options, self=this, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+      var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
 
     function program1(depth0,data) {
       
+      var buffer = '', helper, options;
+      data.buffer.push("\n    ");
+      data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
+        'tagName': ("button"),
+        'class': ("button tiny")
+      },hashTypes:{'tagName': "STRING",'class': "STRING"},hashContexts:{'tagName': depth0,'class': depth0},contexts:[depth0,depth0,depth0],types:["STRING","STRING","STRING"],data:data},helper ? helper.call(depth0, "My Bookclips", "users.show", "bookmarks", options) : helperMissing.call(depth0, "link-to", "My Bookclips", "users.show", "bookmarks", options))));
+      data.buffer.push("\n  ");
+      return buffer;
+      }
+
+    function program3(depth0,data) {
+      
       var buffer = '', stack1, helper, options;
       data.buffer.push("\n    <p class=\"right small\">signed in as ");
-      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users.account", options) : helperMissing.call(depth0, "link-to", "users.account", options));
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users.account", options) : helperMissing.call(depth0, "link-to", "users.account", options));
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("</p>\n  ");
       return buffer;
       }
-    function program2(depth0,data) {
+    function program4(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push(" ");
@@ -782,7 +877,7 @@ define("bookclipper/templates/application",
       return buffer;
       }
 
-    function program4(depth0,data) {
+    function program6(depth0,data) {
       
       var buffer = '', helper, options;
       data.buffer.push("\n    <p class=\"right\">\n      ");
@@ -797,7 +892,10 @@ define("bookclipper/templates/application",
       data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
         'tagName': ("button"),
         'class': ("button tiny")
-      },hashTypes:{'tagName': "STRING",'class': "STRING"},hashContexts:{'tagName': depth0,'class': depth0},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Bookmarks", "bookmarks", options) : helperMissing.call(depth0, "link-to", "Bookmarks", "bookmarks", options))));
+      },hashTypes:{'tagName': "STRING",'class': "STRING"},hashContexts:{'tagName': depth0,'class': depth0},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "All Bookclips", "bookmarks", options) : helperMissing.call(depth0, "link-to", "All Bookclips", "bookmarks", options))));
+      data.buffer.push("\n  ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  ");
       data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
         'tagName': ("button"),
@@ -808,8 +906,8 @@ define("bookclipper/templates/application",
         'tagName': ("button"),
         'class': ("button tiny")
       },hashTypes:{'tagName': "STRING",'class': "STRING"},hashContexts:{'tagName': depth0,'class': depth0},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Users", "users", options) : helperMissing.call(depth0, "link-to", "Users", "users", options))));
-      data.buffer.push("\n  <button class='button tiny'>More soon</button>\n</div>\n<div class='row'>\n  ");
-      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+      data.buffer.push("\n</div>\n<div class='row'>\n  ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  <hr>\n</div>\n");
       stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
@@ -852,10 +950,10 @@ define("bookclipper/templates/bookmarks",
       data.buffer.push("\n    <p>Sign in to post</p>\n  ");
       }
 
-      data.buffer.push("<div class=\"row\">\n  ");
+      data.buffer.push("<div class=\"row\">\n  <div class=\"columns\">\n  ");
       stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n</div>\n\n<div class='row'>\n  ");
+      data.buffer.push("\n  </div>\n</div>\n\n<div class='row'>\n  ");
       stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n</div>\n\n<hr>\n<div class=\"row\">\n  <small>\n    Website thumbnails by <a href=\"http://www.bitpixels.com/\">BitPixels</a>\n  </small>\n</div>\n");
@@ -880,13 +978,13 @@ define("bookclipper/templates/bookmarks/-form",
       },hashTypes:{'on': "STRING"},hashContexts:{'on': depth0},contexts:[depth0],types:["STRING"],data:data})));
       data.buffer.push(">\n  <label>URL:\n    ");
       data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-        'value': ("model.url"),
+        'value': ("url"),
         'placeholder': ("A valid URL")
       },hashTypes:{'value': "ID",'placeholder': "STRING"},hashContexts:{'value': depth0,'placeholder': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-      data.buffer.push("\n  </label>\n  <label>tags:\n    ");
+      data.buffer.push("\n  </label>\n  <label>Tags:\n    ");
       data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
-        'value': ("model.tags"),
-        'placeholder': ("Related Tags")
+        'value': ("tags"),
+        'placeholder': ("Seperated by comma or space")
       },hashTypes:{'value': "ID",'placeholder': "STRING"},hashContexts:{'value': depth0,'placeholder': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
       data.buffer.push("\n  </label>\n  <br>\n  <input type=\"submit\" value=\"save\" class=\"button tiny\" />\n</form>\n");
       return buffer;
@@ -901,53 +999,39 @@ define("bookclipper/templates/bookmarks/index",
     __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+      var buffer = '', stack1, self=this, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
     function program1(depth0,data) {
       
       var buffer = '', stack1, helper, options;
-      data.buffer.push("\n      <h5>");
+      data.buffer.push("\n    <h5 class=\"inline-bold\">");
       stack1 = helpers._triageMustache.call(depth0, "title", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("</h5>\n      ");
-      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "bookmarks.show", "", options) : helperMissing.call(depth0, "link-to", "bookmarks.show", "", options));
+      data.buffer.push("</h5>\n    <br>\n    ");
+      stack1 = helpers.each.call(depth0, "hashtags", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n\n      <a href='' ");
-      data.buffer.push(escapeExpression(helpers.action.call(depth0, "clipIt", "bookmark", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
-      data.buffer.push(">");
-      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
-        'size': ("lg")
-      },hashTypes:{'size': "STRING"},hashContexts:{'size': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-check-circle-o", options) : helperMissing.call(depth0, "fa-icon", "fa-check-circle-o", options))));
-      data.buffer.push(" Clip it!</a>\n      <br>\n      ");
-      stack1 = helpers.each.call(depth0, "hashtags", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["ID"],data:data});
+      data.buffer.push("\n    <br>\n    ");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "bookmarks.show", "", options) : helperMissing.call(depth0, "link-to", "bookmarks.show", "", options));
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n      <br>\n      <small>Clipped by:</small>\n      ");
-      stack1 = helpers.each.call(depth0, "users", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],data:data});
+      data.buffer.push("\n    <br>\n    ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n      <br><br>\n    ");
+      data.buffer.push("\n    <br>\n    <small>Clipped by:</small>\n    ");
+      stack1 = helpers.each.call(depth0, "users", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    <br><br>\n  ");
       return buffer;
       }
     function program2(depth0,data) {
       
-      var buffer = '';
-      data.buffer.push("\n        <img ");
-      data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
-        'src': ("bookmark_img")
-      },hashTypes:{'src': "STRING"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
-      data.buffer.push(" alt='' class='bookmark-img'>\n      ");
-      return buffer;
-      }
-
-    function program4(depth0,data) {
-      
       var buffer = '', stack1, helper, options;
-      data.buffer.push("\n        <small>\n          ");
-      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "hashtags.show", "", options) : helperMissing.call(depth0, "link-to", "hashtags.show", "", options));
+      data.buffer.push("\n      <small>\n        ");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "hashtags.show", "", options) : helperMissing.call(depth0, "link-to", "hashtags.show", "", options));
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n          &nbsp;\n        </small>\n      ");
+      data.buffer.push("\n        &nbsp;\n      </small>\n    ");
       return buffer;
       }
-    function program5(depth0,data) {
+    function program3(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push("#");
@@ -956,16 +1040,70 @@ define("bookclipper/templates/bookmarks/index",
       return buffer;
       }
 
+    function program5(depth0,data) {
+      
+      var buffer = '';
+      data.buffer.push("\n      <img ");
+      data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+        'src': ("bookmark_img")
+      },hashTypes:{'src': "STRING"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
+      data.buffer.push(" alt='' class='bookmark-img'>\n    ");
+      return buffer;
+      }
+
     function program7(depth0,data) {
       
-      var buffer = '', stack1, helper, options;
-      data.buffer.push("\n        <small class='small grey'>\n          ");
-      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "users.show", "", options) : helperMissing.call(depth0, "link-to", "users.show", "", options));
+      var buffer = '', stack1;
+      data.buffer.push("\n      ");
+      stack1 = helpers['if'].call(depth0, "editable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(11, program11, data),fn:self.program(8, program8, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n        </small>\n      ");
+      data.buffer.push("\n    ");
       return buffer;
       }
     function program8(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n        <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "remove", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-chain-broken", options) : helperMissing.call(depth0, "fa-icon", "fa-chain-broken", options))));
+      data.buffer.push(" Unclip</a>\n        &nbsp;");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
+        'class': ("action")
+      },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "bookmarks.update", "", options) : helperMissing.call(depth0, "link-to", "bookmarks.update", "", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n      ");
+      return buffer;
+      }
+    function program9(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-pencil-square-o", options) : helperMissing.call(depth0, "fa-icon", "fa-pencil-square-o", options))));
+      data.buffer.push(" Edit");
+      return buffer;
+      }
+
+    function program11(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push("\n        <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "clipIt", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark-o", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark-o", options))));
+      data.buffer.push(" Clip it!</a>\n      ");
+      return buffer;
+      }
+
+    function program13(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n      <small class='small grey'>\n        ");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(14, program14, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "users.show", "", options) : helperMissing.call(depth0, "link-to", "users.show", "", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n      </small>\n    ");
+      return buffer;
+      }
+    function program14(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push("&nbsp;");
@@ -974,10 +1112,10 @@ define("bookclipper/templates/bookmarks/index",
       return buffer;
       }
 
-      data.buffer.push("<div class=\"columns medium-6\">\n    ");
+      data.buffer.push("<div class=\"columns medium-6\">\n  <br>\n  ");
       stack1 = helpers.each.call(depth0, {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n  </div>\n");
+      data.buffer.push("\n</div>\n");
       return buffer;
       
     });
@@ -990,12 +1128,36 @@ define("bookclipper/templates/bookmarks/new",
     __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+      var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
 
+    function program1(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push("\n      ");
+      data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bookmarks/form", options) : helperMissing.call(depth0, "partial", "bookmarks/form", options))));
+      data.buffer.push("\n    ");
+      return buffer;
+      }
+
+    function program3(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push("\n      <p>You're currently no logged in</p>\n      ");
+      data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Sign Up", "users.new", options) : helperMissing.call(depth0, "link-to", "Sign Up", "users.new", options))));
+      data.buffer.push(" or\n      ");
+      data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Log In", "users.login", options) : helperMissing.call(depth0, "link-to", "Log In", "users.login", options))));
+      data.buffer.push("\n    ");
+      return buffer;
+      }
 
       data.buffer.push("<h3>New Bookclip</h3>\n<div class=\"row\">\n  <div class=\"columns medium-7\">\n    ");
-      data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bookmarks/form", options) : helperMissing.call(depth0, "partial", "bookmarks/form", options))));
-      data.buffer.push("\n  </div>\n</div>\n");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n  </div>\n  <div class=\"columns medium-5\">\n    <div class=\"panel\">\n      <h3>Try the bookmarklet!</h3>\n      <p>Drag the 'Clip it!' button to your browser's bookmark bar. Click it whenever you find yourself on a site you want to save to your bookmarks.</p>\n      <a href=\"javascript:(function(){\n    location.href='http://bookclipper.herokuapp.com/bookmarks/new?url='+encodeURIComponent(location.href)\n  })();\" class=\"button round alert\">Clip it!</a><small class=\"small\">  ");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
+        'size': ("lg")
+      },hashTypes:{'size': "STRING"},hashContexts:{'size': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-long-arrow-left", options) : helperMissing.call(depth0, "fa-icon", "fa-long-arrow-left", options))));
+      data.buffer.push(" Drag to bookmarks bar</small>\n  </div>\n  </div>\n</div>\n");
       return buffer;
       
     });
@@ -1030,14 +1192,57 @@ define("bookclipper/templates/bookmarks/show",
 
     function program4(depth0,data) {
       
+      var buffer = '', stack1;
+      data.buffer.push("\n    ");
+      stack1 = helpers['if'].call(depth0, "editable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(8, program8, data),fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n  ");
+      return buffer;
+      }
+    function program5(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n      <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "remove", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-chain-broken", options) : helperMissing.call(depth0, "fa-icon", "fa-chain-broken", options))));
+      data.buffer.push(" Unclip</a>\n      &nbsp;");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
+        'class': ("action")
+      },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(6, program6, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "bookmarks.update", "", options) : helperMissing.call(depth0, "link-to", "bookmarks.update", "", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    ");
+      return buffer;
+      }
+    function program6(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-pencil-square-o", options) : helperMissing.call(depth0, "fa-icon", "fa-pencil-square-o", options))));
+      data.buffer.push(" Edit");
+      return buffer;
+      }
+
+    function program8(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push("\n      <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "clipIt", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark-o", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark-o", options))));
+      data.buffer.push(" Clip it!</a>\n    ");
+      return buffer;
+      }
+
+    function program10(depth0,data) {
+      
       var buffer = '', stack1, helper, options;
       data.buffer.push("\n    <small class='small grey'>\n      ");
-      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "users.show", "", options) : helperMissing.call(depth0, "link-to", "users.show", "", options));
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "users.show", "", options) : helperMissing.call(depth0, "link-to", "users.show", "", options));
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n    </small>\n  ");
       return buffer;
       }
-    function program5(depth0,data) {
+    function program11(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push("&nbsp;");
@@ -1053,12 +1258,15 @@ define("bookclipper/templates/bookmarks/show",
       data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
         'src': ("bookmark_img")
       },hashTypes:{'src': "STRING"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
-      data.buffer.push(" alt='' class='bookmark-img'>\n  <h6><a ");
+      data.buffer.push(" alt='' class='bookmark-img'>\n  <h6 class=\"inline-bold\"><a ");
       data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
         'href': ("url")
       },hashTypes:{'href': "STRING"},hashContexts:{'href': depth0},contexts:[],types:[],data:data})));
-      data.buffer.push(">Visit link</a></h6>\n  <small>Clipped by:</small>\n  ");
-      stack1 = helpers.each.call(depth0, "users", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["ID"],data:data});
+      data.buffer.push(">Visit link</a></h6>\n  ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n  <br>\n  <small>Clipped by:</small>\n  ");
+      stack1 = helpers.each.call(depth0, "users", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n</div>\n<div class=\"columns medium-8\">\n  <br>\n  <h5>");
       stack1 = helpers._triageMustache.call(depth0, "title", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
@@ -1070,6 +1278,43 @@ define("bookclipper/templates/bookmarks/show",
       stack1 = helpers._triageMustache.call(depth0, "url", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("</p>\n</div>");
+      return buffer;
+      
+    });
+  });
+define("bookclipper/templates/bookmarks/update", 
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    this.compilerInfo = [4,'>= 1.0.0'];
+    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+      var buffer = '', helper, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+
+
+      data.buffer.push("<form ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "update", {hash:{
+        'on': ("submit")
+      },hashTypes:{'on': "STRING"},hashContexts:{'on': depth0},contexts:[depth0],types:["STRING"],data:data})));
+      data.buffer.push(">\n  <label>Title:\n    ");
+      data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+        'value': ("title"),
+        'placeholder': ("Title")
+      },hashTypes:{'value': "ID",'placeholder': "STRING"},hashContexts:{'value': depth0,'placeholder': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      data.buffer.push("\n  </label>\n  <label>Description:\n    ");
+      data.buffer.push(escapeExpression((helper = helpers.textarea || (depth0 && depth0.textarea),options={hash:{
+        'value': ("description"),
+        'cols': ("80"),
+        'rows': ("4"),
+        'placeholder': ("Description")
+      },hashTypes:{'value': "ID",'cols': "STRING",'rows': "STRING",'placeholder': "STRING"},hashContexts:{'value': depth0,'cols': depth0,'rows': depth0,'placeholder': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "textarea", options))));
+      data.buffer.push("\n  </label>\n  <label>Tags:\n    ");
+      data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+        'value': ("tags"),
+        'placeholder': ("seperated by comma or space")
+      },hashTypes:{'value': "ID",'placeholder': "STRING"},hashContexts:{'value': depth0,'placeholder': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+      data.buffer.push("\n  </label>\n  <br>\n  <input type=\"submit\" value=\"update\" class=\"button tiny\" />\n</form>\n");
       return buffer;
       
     });
@@ -1665,7 +1910,7 @@ define("bookclipper/templates/hashtags/index",
       return buffer;
       }
 
-      data.buffer.push("\n  ");
+      data.buffer.push("  ");
       stack1 = helpers.each.call(depth0, {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n");
@@ -1693,12 +1938,15 @@ define("bookclipper/templates/hashtags/show",
       data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
         'src': ("bookmark_img")
       },hashTypes:{'src': "STRING"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
-      data.buffer.push(" alt='' class='bookmark-img'>\n    <h6><a ");
+      data.buffer.push(" alt='' class='bookmark-img'>\n    <h6 class=\"inline-bold\"><a ");
       data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
         'href': ("url")
       },hashTypes:{'href': "STRING"},hashContexts:{'href': depth0},contexts:[],types:[],data:data})));
-      data.buffer.push(">Visit link</a></h6>\n    <small>Clipped by</small>\n    ");
-      stack1 = helpers.each.call(depth0, "users", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
+      data.buffer.push(">Visit link</a></h6>\n    ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    <br>\n    <small>Clipped by</small>\n    ");
+      stack1 = helpers.each.call(depth0, "users", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  </div>\n  <br>\n  <div class=\"columns medium-8\">\n    <h5>");
       stack1 = helpers._triageMustache.call(depth0, "title", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
@@ -1732,14 +1980,57 @@ define("bookclipper/templates/hashtags/show",
 
     function program5(depth0,data) {
       
+      var buffer = '', stack1;
+      data.buffer.push("\n      ");
+      stack1 = helpers['if'].call(depth0, "editable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(9, program9, data),fn:self.program(6, program6, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    ");
+      return buffer;
+      }
+    function program6(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n        <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "remove", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-chain-broken", options) : helperMissing.call(depth0, "fa-icon", "fa-chain-broken", options))));
+      data.buffer.push(" Unclip</a>\n        &nbsp;");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
+        'class': ("action")
+      },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "bookmarks.update", "", options) : helperMissing.call(depth0, "link-to", "bookmarks.update", "", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n      ");
+      return buffer;
+      }
+    function program7(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-pencil-square-o", options) : helperMissing.call(depth0, "fa-icon", "fa-pencil-square-o", options))));
+      data.buffer.push(" Edit");
+      return buffer;
+      }
+
+    function program9(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push("\n        <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "clipIt", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark-o", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark-o", options))));
+      data.buffer.push(" Clip it!</a>\n      ");
+      return buffer;
+      }
+
+    function program11(depth0,data) {
+      
       var buffer = '', stack1, helper, options;
       data.buffer.push("\n      <small class='small grey'>\n        ");
-      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(6, program6, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "users.show", "", options) : helperMissing.call(depth0, "link-to", "users.show", "", options));
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(12, program12, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "users.show", "", options) : helperMissing.call(depth0, "link-to", "users.show", "", options));
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n      </small>\n    ");
       return buffer;
       }
-    function program6(depth0,data) {
+    function program12(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push("&nbsp;");
@@ -1951,7 +2242,7 @@ define("bookclipper/templates/users/login",
         'placeholder': ("Enter Password"),
         'type': ("password")
       },hashTypes:{'value': "ID",'placeholder': "STRING",'type': "STRING"},hashContexts:{'value': depth0,'placeholder': depth0,'type': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-      data.buffer.push("\n        <button type=\"submit\" class=\"tiny round button alert\">Login</button>\n      </form>\n      <a href=\"http://localhost:3000/users/auth/twitter\">");
+      data.buffer.push("\n        <button type=\"submit\" class=\"tiny round button alert\">Login</button>\n      </form>\n      <a href=\"http://bookclipper.herokuapp.com/api/users/auth/twitter\">");
       data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
         'size': ("lg")
       },hashTypes:{'size': "STRING"},hashContexts:{'size': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-twitter", options) : helperMissing.call(depth0, "fa-icon", "fa-twitter", options))));
@@ -2004,7 +2295,7 @@ define("bookclipper/templates/users/new",
         'placeholder': ("Confirm Password"),
         'type': ("password")
       },hashTypes:{'value': "ID",'placeholder': "STRING",'type': "STRING"},hashContexts:{'value': depth0,'placeholder': depth0,'type': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-      data.buffer.push("\n    </label>\n    <input type=\"submit\" value=\"save\" class=\"button tiny round alert\" />\n  </form>\n  <a href=\"http://localhost:3000/users/auth/twitter\">");
+      data.buffer.push("\n    </label>\n    <input type=\"submit\" value=\"save\" class=\"button tiny round alert\" />\n  </form>\n  <a href=\"http://bookclipper.herokuapp.com/api/users/auth/twitter\">");
       data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{
         'size': ("lg")
       },hashTypes:{'size': "STRING"},hashContexts:{'size': depth0},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-twitter", options) : helperMissing.call(depth0, "fa-icon", "fa-twitter", options))));
@@ -2021,27 +2312,129 @@ define("bookclipper/templates/users/show",
     __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
+      var buffer = '', stack1, self=this, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
     function program1(depth0,data) {
       
-      var buffer = '', helper, options;
-      data.buffer.push("\n    <ul>\n      <li>");
-      data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0,depth0],types:["ID","STRING","ID"],data:data},helper ? helper.call(depth0, "title", "bookmarks.show", "", options) : helperMissing.call(depth0, "link-to", "title", "bookmarks.show", "", options))));
-      data.buffer.push("</li>\n    </ul>\n  ");
+      var buffer = '', stack1;
+      data.buffer.push("\n<div class=\"row\">\n  <div class='columns medium-3'>\n    ");
+      stack1 = helpers.each.call(depth0, "hashtags", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    <br>\n    <img ");
+      data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+        'src': ("bookmark_img")
+      },hashTypes:{'src': "STRING"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
+      data.buffer.push(" alt='' class='bookmark-img'>\n    <h6 class=\"inline-bold\"><a ");
+      data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
+        'href': ("url")
+      },hashTypes:{'href': "STRING"},hashContexts:{'href': depth0},contexts:[],types:[],data:data})));
+      data.buffer.push(">Visit link</a></h6>\n    ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    <br>\n    <small>Clipped by</small>\n    ");
+      stack1 = helpers.each.call(depth0, "users", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(11, program11, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n  </div>\n  <br>\n  <div class=\"columns medium-8\">\n    <h5>");
+      stack1 = helpers._triageMustache.call(depth0, "title", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("</h5>\n    <p>");
+      stack1 = helpers._triageMustache.call(depth0, "description", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("</p>\n    <p class='small'>");
+      stack1 = helpers._triageMustache.call(depth0, "url", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("</p>\n  </div>\n</div>\n<br>\n");
+      return buffer;
+      }
+    function program2(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n      <small>\n        ");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "hashtags.show", "", options) : helperMissing.call(depth0, "link-to", "hashtags.show", "", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n        &nbsp;\n      </small>\n    ");
+      return buffer;
+      }
+    function program3(depth0,data) {
+      
+      var buffer = '', stack1;
+      data.buffer.push("#");
+      stack1 = helpers._triageMustache.call(depth0, "topic", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       return buffer;
       }
 
-      data.buffer.push("<div class=\"columns medium-8\">\n  <h5>\n    ");
+    function program5(depth0,data) {
+      
+      var buffer = '', stack1;
+      data.buffer.push("\n      ");
+      stack1 = helpers['if'].call(depth0, "editable", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(9, program9, data),fn:self.program(6, program6, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    ");
+      return buffer;
+      }
+    function program6(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n        <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "remove", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-chain-broken", options) : helperMissing.call(depth0, "fa-icon", "fa-chain-broken", options))));
+      data.buffer.push(" Unclip</a>\n        &nbsp;");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
+        'class': ("action")
+      },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "bookmarks.update", "", options) : helperMissing.call(depth0, "link-to", "bookmarks.update", "", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n      ");
+      return buffer;
+      }
+    function program7(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-pencil-square-o", options) : helperMissing.call(depth0, "fa-icon", "fa-pencil-square-o", options))));
+      data.buffer.push(" Edit");
+      return buffer;
+      }
+
+    function program9(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push("\n        <a href='' ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "clipIt", "id", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+      data.buffer.push(" class=\"action\">");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark-o", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark-o", options))));
+      data.buffer.push(" Clip it!</a>\n      ");
+      return buffer;
+      }
+
+    function program11(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n      <small class='small grey'>\n        ");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(12, program12, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "users.show", "", options) : helperMissing.call(depth0, "link-to", "users.show", "", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n      </small>\n    ");
+      return buffer;
+      }
+    function program12(depth0,data) {
+      
+      var buffer = '', stack1;
+      data.buffer.push("&nbsp;");
+      stack1 = helpers._triageMustache.call(depth0, "name", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("&nbsp;");
+      return buffer;
+      }
+
+      data.buffer.push("  <h5>\n    ");
       stack1 = helpers._triageMustache.call(depth0, "name", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n    <small>\n      ");
       stack1 = helpers._triageMustache.call(depth0, "bookmarks.length", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push(" bookmarks\n    </small>\n  </h5>\n  ");
+      data.buffer.push(" bookmarks\n    </small>\n  </h5>\n");
       stack1 = helpers.each.call(depth0, "bookmarks", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n\n</div>");
       return buffer;
       
     });
@@ -2172,15 +2565,6 @@ define("bookclipper/tests/bookclipper/tests/unit/serializers/bookmark-test.jshin
       ok(true, 'bookclipper/tests/unit/serializers/bookmark-test.js should pass jshint.'); 
     });
   });
-define("bookclipper/tests/controllers/application.jshint", 
-  [],
-  function() {
-    "use strict";
-    module('JSHint - controllers');
-    test('controllers/application.js should pass jshint', function() { 
-      ok(true, 'controllers/application.js should pass jshint.'); 
-    });
-  });
 define("bookclipper/tests/controllers/bookmarks/index.jshint", 
   [],
   function() {
@@ -2197,6 +2581,33 @@ define("bookclipper/tests/controllers/bookmarks/new.jshint",
     module('JSHint - controllers/bookmarks');
     test('controllers/bookmarks/new.js should pass jshint', function() { 
       ok(true, 'controllers/bookmarks/new.js should pass jshint.'); 
+    });
+  });
+define("bookclipper/tests/controllers/bookmarks/show.jshint", 
+  [],
+  function() {
+    "use strict";
+    module('JSHint - controllers/bookmarks');
+    test('controllers/bookmarks/show.js should pass jshint', function() { 
+      ok(true, 'controllers/bookmarks/show.js should pass jshint.'); 
+    });
+  });
+define("bookclipper/tests/controllers/bookmarks/update.jshint", 
+  [],
+  function() {
+    "use strict";
+    module('JSHint - controllers/bookmarks');
+    test('controllers/bookmarks/update.js should pass jshint', function() { 
+      ok(true, 'controllers/bookmarks/update.js should pass jshint.'); 
+    });
+  });
+define("bookclipper/tests/controllers/hashtags/show.jshint", 
+  [],
+  function() {
+    "use strict";
+    module('JSHint - controllers/hashtags');
+    test('controllers/hashtags/show.js should pass jshint', function() { 
+      ok(true, 'controllers/hashtags/show.js should pass jshint.'); 
     });
   });
 define("bookclipper/tests/controllers/users/account.jshint", 
@@ -2224,6 +2635,15 @@ define("bookclipper/tests/controllers/users/new.jshint",
     module('JSHint - controllers/users');
     test('controllers/users/new.js should pass jshint', function() { 
       ok(true, 'controllers/users/new.js should pass jshint.'); 
+    });
+  });
+define("bookclipper/tests/controllers/users/show.jshint", 
+  [],
+  function() {
+    "use strict";
+    module('JSHint - controllers/users');
+    test('controllers/users/show.js should pass jshint', function() { 
+      ok(true, 'controllers/users/show.js should pass jshint.'); 
     });
   });
 define("bookclipper/tests/helpers/resolver", 
@@ -2475,15 +2895,6 @@ define("bookclipper/tests/routes/bookmarks/index.jshint",
       ok(true, 'routes/bookmarks/index.js should pass jshint.'); 
     });
   });
-define("bookclipper/tests/routes/bookmarks/new.jshint", 
-  [],
-  function() {
-    "use strict";
-    module('JSHint - routes/bookmarks');
-    test('routes/bookmarks/new.js should pass jshint', function() { 
-      ok(true, 'routes/bookmarks/new.js should pass jshint.'); 
-    });
-  });
 define("bookclipper/tests/routes/hashtags/index.jshint", 
   [],
   function() {
@@ -2502,15 +2913,6 @@ define("bookclipper/tests/routes/sessions/current.jshint",
       ok(true, 'routes/sessions/current.js should pass jshint.'); 
     });
   });
-define("bookclipper/tests/routes/users/accountdelete.jshint", 
-  [],
-  function() {
-    "use strict";
-    module('JSHint - routes/users');
-    test('routes/users/accountdelete.js should pass jshint', function() { 
-      ok(true, 'routes/users/accountdelete.js should pass jshint.'); 
-    });
-  });
 define("bookclipper/tests/routes/users/index.jshint", 
   [],
   function() {
@@ -2518,15 +2920,6 @@ define("bookclipper/tests/routes/users/index.jshint",
     module('JSHint - routes/users');
     test('routes/users/index.js should pass jshint', function() { 
       ok(true, 'routes/users/index.js should pass jshint.'); 
-    });
-  });
-define("bookclipper/tests/routes/users/new.jshint", 
-  [],
-  function() {
-    "use strict";
-    module('JSHint - routes/users');
-    test('routes/users/new.js should pass jshint', function() { 
-      ok(true, 'routes/users/new.js should pass jshint.'); 
     });
   });
 define("bookclipper/tests/serializers/bookmark.jshint", 

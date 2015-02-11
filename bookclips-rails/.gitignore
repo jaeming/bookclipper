@@ -6,6 +6,7 @@
 
 /config/app_config.yml
 /config/application.yml
+/coverage
 
 # Ignore bundler config.
 /.bundle

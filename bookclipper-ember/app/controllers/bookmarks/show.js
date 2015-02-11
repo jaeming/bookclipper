@@ -5,7 +5,7 @@ actions: {
     clipIt: function(id) {
       var _this = this;
       Ember.$.ajax({
-      url : '/favorites',
+      url : 'api/favorites',
       type: 'POST',
       dataType : "json",
       data: {"bookmark_id": id},
@@ -23,7 +23,7 @@ actions: {
     remove: function(id) {
       var _this = this;
       Ember.$.ajax({
-      url : '/favorites/'+id,
+      url : 'api/favorites/'+id,
       type: 'DELETE',
       dataType : "json",
       success:function() {

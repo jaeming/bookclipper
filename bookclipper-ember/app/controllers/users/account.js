@@ -4,7 +4,7 @@ export default Ember.ObjectController.extend({
   actions: {
     signout: function() {
       Ember.$.ajax({
-        url: '/users/sign_out',
+        url: 'api/users/sign_out',
         type: 'DELETE',
         success: function(result) {
           console.log(result);

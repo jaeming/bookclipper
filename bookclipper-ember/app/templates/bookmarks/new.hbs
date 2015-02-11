@@ -11,10 +11,10 @@
   </div>
   <div class="columns medium-5">
     <div class="panel">
-      <h3>Try our bookmarklet!</h3>
-      <p>Drag the 'Clip it!' button to your browser's bookmark bar. Then click it whenever you find yourself on a site you want to save to your bookmarks.</p>
+      <h3>Try the bookmarklet!</h3>
+      <p>Drag the 'Clip it!' button to your browser's bookmark bar. Click it whenever you find yourself on a site you want to save to your bookmarks.</p>
       <a href="javascript:(function(){
-    location.href='http://localhost:4200/bookmarks/new?url='+encodeURIComponent(location.href)
+    location.href='http://bookclipper.herokuapp.com/bookmarks/new?url='+encodeURIComponent(location.href)
   })();" class="button round alert">Clip it!</a><small class="small">  {{fa-icon "fa-long-arrow-left" size="lg"}} Drag to bookmarks bar</small>
   </div>
   </div>

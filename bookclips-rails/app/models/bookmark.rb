@@ -15,8 +15,10 @@ class Bookmark < ActiveRecord::Base
         :user_agent => 'Mozilla/5.0 (compatible; mytestapp/1.0; my@email.com)'
     obj = embedly_api.extract :url => self.url
     json = JSON.pretty_generate(obj[0].marshal_dump)
-    self.title = JsonPath.on(json, '$..title')[0]
-    self.description = JsonPath.on(json, '$..description')[0]
+    body = JSON.parse(json)
+
+    self.title = body["title"]
+    self.description = body["description"]
     self.save!
   end
 

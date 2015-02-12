@@ -14,7 +14,9 @@
       </small>
     {{/each}}
     <br>
+    {{#link-to 'bookmarks.show' this}}
     <img {{bind-attr src="bookmark_img"}} alt='' class='bookmark-img'>
+    {{/link-to}}
     <h6 class="inline-bold"><a {{bind-attr href="url"}}>Visit link</a></h6>
     {{#if authenticated}}
       {{#if editable}}

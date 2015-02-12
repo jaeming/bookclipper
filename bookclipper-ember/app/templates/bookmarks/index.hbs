@@ -1,8 +1,6 @@
-<div class="columns medium-6">
-  <br>
-  {{#each}}
-    <h5 class="inline-bold">{{title}}</h5>
-    <br>
+{{#each}}
+<div class="row">
+  <div class='columns medium-3'>
     {{#each hashtags}}
       <small>
         {{#link-to 'hashtags.show' this}}#{{topic}}{{/link-to}}
@@ -11,9 +9,9 @@
     {{/each}}
     <br>
     {{#link-to 'bookmarks.show' this}}
-      <img {{bind-attr src='bookmark_img'}} alt='' class='bookmark-img'>
+    <img {{bind-attr src="bookmark_img"}} alt='' class='bookmark-img'>
     {{/link-to}}
-    <br>
+    <h6 class="inline-bold"><a {{bind-attr href="url"}}>Visit link</a></h6>
     {{#if authenticated}}
       {{#if editable}}
         <a href='' {{action 'remove' id}} class="action">{{fa-icon "fa-chain-broken"}} Unclip</a>
@@ -23,12 +21,19 @@
       {{/if}}
     {{/if}}
     <br>
-    <small>Clipped by:</small>
+    <small>Clipped by</small>
     {{#each users}}
       <small class='small grey'>
-        {{#link-to 'users.show' this}}&nbsp;{{name}}{{/link-to}}
+        {{#link-to 'users.show' this}}&nbsp;{{name}}&nbsp;{{/link-to}}
       </small>
     {{/each}}
-    <br><br>
-  {{/each}}
+  </div>
+  <br>
+  <div class="columns medium-8">
+    <h5>{{title}}</h5>
+    <p>{{description}}</p>
+    <p class='small'>{{url}}</p>
+  </div>
 </div>
+<br>
+{{/each}}

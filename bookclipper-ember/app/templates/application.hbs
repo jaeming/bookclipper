@@ -7,7 +7,7 @@
   {{link-to 'Hashtags' 'hashtags' tagName='button' class="button tiny"}}
   {{link-to 'Users' 'users' tagName='button' class="button tiny"}}
 </div>
-<div class='row'>
+<div class='row top-border'>
   {{#if authenticated}}
     <p class="right small">signed in as {{#link-to 'users.account'}} {{user_name}} {{/link-to}}</p>
   {{else}}

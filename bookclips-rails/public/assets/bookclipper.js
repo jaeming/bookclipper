@@ -275,6 +275,8 @@ define("bookclipper/controllers/bookmarks/new",
             tags: this.get('tags'),
           });
           newBookmark.save().then(function(bookmark) {
+            _this.set('url', '');
+            _this.set('tags', '');
             _this.transitionToRoute('bookmarks.show', bookmark);
           });
           }
@@ -440,7 +442,7 @@ define("bookclipper/controllers/users/login",
           data: {"user":{"email": email, "password": password}},
           success:function(data) {
             console.log(data);
-            window.location.href = 'bookmarks';
+            window.location.href = '/';
           },
           error: function() { alert('something bad happened'); }
           });
@@ -467,7 +469,7 @@ define("bookclipper/controllers/users/new",
           error: function() { alert('something bad happened'); }
           });
           newUser.save().then(function (){
-          window.location.href = 'bookmarks';
+          window.location.href = '/';
       });
 
 
@@ -906,7 +908,7 @@ define("bookclipper/templates/application",
         'tagName': ("button"),
         'class': ("button tiny")
       },hashTypes:{'tagName': "STRING",'class': "STRING"},hashContexts:{'tagName': depth0,'class': depth0},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Users", "users", options) : helperMissing.call(depth0, "link-to", "Users", "users", options))));
-      data.buffer.push("\n</div>\n<div class='row'>\n  ");
+      data.buffer.push("\n</div>\n<div class='row top-border'>\n  ");
       stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  <hr>\n</div>\n");
@@ -2236,7 +2238,7 @@ define("bookclipper/templates/users/login",
     function program4(depth0,data) {
       
       var buffer = '', helper, options;
-      data.buffer.push("\n      <h3>Sign up</h3>\n      <form ");
+      data.buffer.push("\n      <h3>Log in</h3>\n      <form ");
       data.buffer.push(escapeExpression(helpers.action.call(depth0, "logIn", {hash:{
         'on': ("submit")
       },hashTypes:{'on': "STRING"},hashContexts:{'on': depth0},contexts:[depth0],types:["STRING"],data:data})));

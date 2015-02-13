@@ -10,6 +10,8 @@ export default Ember.ObjectController.extend({
         tags: this.get('tags'),
       });
       newBookmark.save().then(function(bookmark) {
+        _this.set('url', '');
+        _this.set('tags', '');
         _this.transitionToRoute('bookmarks.show', bookmark);
       });
       }

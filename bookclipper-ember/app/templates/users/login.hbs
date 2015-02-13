@@ -4,7 +4,7 @@
       <p>You're logged in now. Create a new Bookclip:</p>
       {{#link-to 'bookmarks.new' class="tiny round button alert"}}Create New{{/link-to}}
     {{else}}
-      <h3>Sign up</h3>
+      <h3>Log in</h3>
       <form {{action 'logIn' on='submit'}}>
         <label>Log in</label>
         {{input value=email placeholder='Enter Login'}}

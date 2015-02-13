@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
       error: function() { alert('something bad happened'); }
       });
       newUser.save().then(function (){
-      window.location.href = 'bookmarks';
+      window.location.href = '/';
   });
 
 

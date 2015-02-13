@@ -11,7 +11,7 @@ export default Ember.ObjectController.extend({
       data: {"user":{"email": email, "password": password}},
       success:function(data) {
         console.log(data);
-        window.location.href = 'bookmarks';
+        window.location.href = '/';
       },
       error: function() { alert('something bad happened'); }
       });

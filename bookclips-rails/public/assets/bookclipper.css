@@ -7358,35 +7358,35 @@ th.hide-for-touch {
     display: table-cell !important; }
  }
 
-/* line 1, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 1, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 button, .button {
   color: #fff;
   background: #60b5e0;
   transition: all 250ms ease; }
 
-/* line 6, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 6, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 button:hover, .button:hover {
   background: #4187a3; }
 
-/* line 9, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 9, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 button:focus, .button:focus {
   border: 4px solid #eaeaea; }
 
-/* line 13, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 13, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 *:focus {
   outline: 0; }
 
-/* line 17, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 17, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .bookmark-img {
   border: 5px solid #eaeaea;
   border-radius: 9px; }
 
-/* line 22, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 22, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .small {
   font-size: 0.7rem;
   color: #7B7B7B; }
 
-/* line 27, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 27, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .grey {
   border-radius: 2px;
   text-align: center;
@@ -7395,15 +7395,15 @@ button:focus, .button:focus {
   margin: 2px;
   padding: 1px 1px 2.5px 1px; }
 
-/* line 36, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 36, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .space {
   margin: 5px; }
 
-/* line 40, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 40, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 #flash-wrapper {
   position: relative; }
 
-/* line 44, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 44, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .flash-message {
   width: 100%;
   height: 100%;
@@ -7412,7 +7412,7 @@ button:focus, .button:focus {
   position: fixed;
   z-index: 1000; }
 
-/* line 53, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 53, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .flash-text {
   text-align: center;
   margin: 0 auto;
@@ -7424,29 +7424,29 @@ button:focus, .button:focus {
   background: #58c1e8;
   border: solid 5px #eaeaea; }
 
-/* line 65, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 65, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .action {
   color: #f2aeae;
   font-size: 0.85rem;
   transition: all 350ms ease; }
-  /* line 69, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+  /* line 69, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
   .action:hover {
     color: #ed7e6d; }
 
-/* line 74, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 74, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .inline-bold {
   margin: 0;
   display: inline; }
 
-/* line 79, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 79, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 h2 {
   font-family: 'Oleo Script Swash Caps', cursive !important; }
 
-/* line 83, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 83, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 button, .button {
   border-radius: 4px; }
 
-/* line 87, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-Lw1zjsft.tmp/app/styles/style */
+/* line 87, /Users/benji/BookmarkApp/bookclipper-ember/tmp/tree_merger-tmp_dest_dir-6qMuCP4u.tmp/app/styles/style */
 .top-border {
   margin-top: -45px; }
 

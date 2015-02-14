@@ -351,6 +351,7 @@ define("bookclipper/controllers/bookmarks/update",
           bookmark.set('description', description);
           bookmark.set('tags', tags);
           bookmark.save().then(function(bookmark) {
+            _this.store.find('bookmark');
             _this.transitionToRoute('bookmarks.show', bookmark);
           });
           }

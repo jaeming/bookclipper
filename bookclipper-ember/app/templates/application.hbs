@@ -1,21 +1,40 @@
-<div class="row">
-  <h2 id='title'>Welcome to Bookclipper</h2>
-  {{link-to 'All Bookclips' 'bookmarks' tagName='button' class="button tiny"}}
-  {{#if authenticated}}
-    {{link-to 'My Bookclips' 'users.show' 'bookmarks' tagName='button' class="button tiny"}}
-  {{/if}}
-  {{link-to 'Hashtags' 'hashtags' tagName='button' class="button tiny"}}
-  {{link-to 'Users' 'users' tagName='button' class="button tiny"}}
+<div class="fixed">
+  <div class="contain-to-grid">
+    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#"><span class='logo-clip'>{{fa-icon "fa-bookmark"}}</span>Bookclipper</a></h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+
+      <section class="top-bar-section">
+        <ul class="right">
+          <li>{{link-to 'All Bookclips' 'bookmarks'}}</li>
+
+        {{#if authenticated}}
+          <li>{{link-to 'My Bookclips' 'users.show' 'bookmarks'}}</li>
+        {{/if}}
+
+        <li>{{link-to 'Hashtags' 'hashtags'}}</li>
+        <li>{{link-to 'Users' 'users'}}</li>
+      </section>
+    </nav>
+  </div>
 </div>
-<div class='row top-border'>
-  {{#if authenticated}}
-    <p class="right small">signed in as {{#link-to 'users.account'}} {{user_name}} {{/link-to}}</p>
-  {{else}}
-    <p class="right">
-      {{link-to 'Sign Up' 'users.new'}} or
-      {{link-to 'Log In' 'users.login'}}
-    </p>
-  {{/if}}
-  <hr>
+
+<div class='user-bar'>
+  <div class='row'>
+    {{#if authenticated}}
+      <p class='user-name'>signed in as {{#link-to 'users.account'}} {{user_name}} {{/link-to}}</p>
+    {{else}}
+      <p class='user-login'>
+        {{link-to 'Sign Up' 'users.new'}} or
+        {{link-to 'Log In' 'users.login'}}
+      </p>
+    {{/if}}
+  </div>
 </div>
-{{outlet}}
+<div class='application'>
+  {{outlet}}
+</div>

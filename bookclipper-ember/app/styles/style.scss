@@ -84,14 +84,52 @@ h2 {
   font-family: 'Oleo Script Swash Caps', cursive !important;
 }
 
-@media #{$small-only}
-  {
-    .top-border {
-      margin-top: 0px; }
-  }
+.logo-clip {
+  margin-right: 7px;
+  font-size: 1.5rem;
+}
 
-@media #{$medium-up}
-  {
-    .top-border {
-      margin-top: -45px; }
-  }
+.user-bar {
+  left: 0;
+  top: 45px;
+  background: #8CCCEC;
+  position: fixed;
+  width: 100%;
+  height: 25px;
+  z-index: 1;
+}
+
+.user-name {
+  float: right;
+  font-size: .8rem;
+  color: #E6F7FF;
+  padding-right: 12px;
+  padding-top: 2px;
+}
+
+.user-name a{
+  font-size: .8rem;
+  color: #fff;
+}
+
+.user-login {
+  float: right;
+  font-size: .8rem;
+  color: #E6F7FF;
+  padding-right: 12px;
+  padding-top: 2px;
+}
+
+.user-login a{
+  font-size: .8rem;
+  color: #fff;
+}
+
+.application {
+  margin-top: 55px;
+}
+
+.visit a {
+  font-size: .85rem;
+  margin-right: 5px;
+}

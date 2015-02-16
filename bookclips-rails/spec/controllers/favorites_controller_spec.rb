@@ -21,7 +21,7 @@ RSpec.describe FavoritesController, :type => :controller do
     bookmark1 = create(:bookmark, users: [user])
     bookmark2 = create(:bookmark, users: [user])
 
-    delete :destroy, {id: bookmark2.id}
+    delete :destroy, {id: bookmark2.id, bookmark_id: bookmark2.id}
 
     expect(user.bookmarks).to eq([bookmark1])
   end

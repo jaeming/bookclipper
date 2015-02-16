@@ -10,6 +10,10 @@ class BookmarkSerializer < ActiveModel::Serializer
     object.user_ids
   end
 
+  def favorites
+    object.favorite_ids
+  end
+
   def attributes
     data = super
     data[:editable] = object.users.include?(current_user)

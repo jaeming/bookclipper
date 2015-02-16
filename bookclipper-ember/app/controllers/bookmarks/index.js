@@ -25,6 +25,7 @@ export default Ember.ArrayController.extend({
       url : 'api/favorites/'+id,
       type: 'DELETE',
       dataType : "json",
+      data: {"bookmark_id": id},
       success:function() {
         Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Removed from your clips!</h3></div></div>");
         setTimeout(function(){

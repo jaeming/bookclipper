@@ -1,3 +1,7 @@
+body {
+  padding: 5%;
+}
+
 button, .button {
   color: #fff;
   background: #60b5e0;
@@ -80,11 +84,14 @@ h2 {
   font-family: 'Oleo Script Swash Caps', cursive !important;
 }
 
-button, .button {
-  border-radius: 4px;
-}
+@media #{$small-only}
+  {
+    .top-border {
+      margin-top: 0px; }
+  }
 
-.top-border {
-  margin-top: -45px;
-}
-
+@media #{$medium-up}
+  {
+    .top-border {
+      margin-top: -45px; }
+  }

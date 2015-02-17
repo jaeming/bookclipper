@@ -9,7 +9,7 @@ class FavoritesController < ApplicationController
 
   def destroy
     @bookmark = Bookmark.find(params[:bookmark_id])
-    @favorite = Favorite.find(@bookmark.favorites.where(user_id: current_user.id))
+    @favorite = Favorite.find(@bookmark.favorites.where(user: current_user))
     @hashtags = @bookmark.hashtags.to_a
     @favorite.destroy!
     @bookmark.destroy! unless @bookmark.users.any?

@@ -4,37 +4,16 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     uid = auth_hash['uid']
     name = auth_hash['info']['name']
     auth = Authorization.find_by_provider_and_uid("twitter", uid)
-    if auth
-      ## We already know about this user who is signing in with the provider: just return the user associated with the Authorization
-      user = auth.user
-    else
-      ## Is a user signed in already? If not, then find or create the user
-      unless current_user
-        unless user = User.find_by_name(name)
-          user = User.create({
-            name: name,
-            password: Devise.friendly_token[0,8],
-            email: "#{UUIDTools::UUID.random_create}@shufflebox.org"
-          })
-          user.skip_confirmation!
-        end
-      else
-        user = current_user
-      end
 
-      ## Finally, create an authorization for the current user
-      unless auth = user.authorizations.find_by_provider("twitter")
-        auth = user.authorizations.build(provider: "twitter", uid: uid)
-        user.authorizations << auth
-      end
-      auth.update_attributes({
-        uid: uid,
-        token: auth_hash['credentials']['token'],
-        secret: auth_hash['credentials']['secret'],
-        name: name,
-        url: "http://twitter.com/#{name}"
-        })
+    user = auth.user if auth
+    user = find_user(auth, auth_hash) || create_user(auth, auth_hash)
+
+    unless auth = user.authorizations.find_by_provider("twitter")
+      auth = user.authorizations.build(provider: "twitter", uid: uid)
+      user.authorizations << auth
     end
+
+    auth.update_attributes(auth_attributes(auth_hash))
 
     if user
       sign_in_and_redirect user, :event => :authentication
@@ -42,4 +21,30 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to :new_user_registration
     end
   end
+
+  private
+
+    def find_user auth, auth_hash
+      user = current_user || User.find_by_name(auth_hash['info']['name'])
+    end
+
+    def create_user auth, auth_hash
+      user = User.new({
+      name: auth_hash['info']['name'],
+      password: Devise.friendly_token[0,8],
+      email: "#{UUIDTools::UUID.random_create}@shufflebox.org"
+      })
+      user.skip_confirmation!
+      user.save!
+      user
+    end
+
+    def auth_attributes(auth_hash)
+      { uid: auth_hash['uid'],
+        token: auth_hash['credentials']['token'],
+        secret: auth_hash['credentials']['secret'],
+        name: auth_hash['info']['name'],
+        url: "http://twitter.com/#{auth_hash['name']}" }
+    end
+
 end

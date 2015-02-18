@@ -211,6 +211,22 @@ define("bookclipper/components/f-tooltip",
 
     __exports__["default"] = FTooltip;
   });
+define("bookclipper/controllers/application", 
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
+
+    __exports__["default"] = Ember.ObjectController.extend({
+      menuVisible: false,
+      actions: {
+        toggleMenu: function() {
+          console.log("menu");
+          this.toggleProperty('menuVisible');
+        }
+      }
+    });
+  });
 define("bookclipper/controllers/bookmarks/index", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
@@ -767,7 +783,7 @@ define("bookclipper/routes/application",
       },
       model: function() {
         return this.store.find('session', 'current');
-      }
+      },
     });
   });
 define("bookclipper/routes/bookmarks/index", 
@@ -856,22 +872,65 @@ define("bookclipper/templates/application",
     function program1(depth0,data) {
       
       var buffer = '', helper, options;
-      data.buffer.push("\n          <li>");
-      data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0,depth0],types:["STRING","STRING","STRING"],data:data},helper ? helper.call(depth0, "My Bookclips", "users.show", "bookmarks", options) : helperMissing.call(depth0, "link-to", "My Bookclips", "users.show", "bookmarks", options))));
-      data.buffer.push("</li>\n        ");
+      data.buffer.push("<span class='logo-clip'>");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark", options))));
+      data.buffer.push("</span>Bookclipper");
       return buffer;
       }
 
     function program3(depth0,data) {
       
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark-o", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark-o", options))));
+      data.buffer.push(" All Bookmarks");
+      return buffer;
+      }
+
+    function program5(depth0,data) {
+      
       var buffer = '', stack1, helper, options;
-      data.buffer.push("\n      <p class='user-name'>signed in as ");
-      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users.account", options) : helperMissing.call(depth0, "link-to", "users.account", options));
+      data.buffer.push("\n            <li>");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(6, program6, data),contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "users.show", "bookmarks", options) : helperMissing.call(depth0, "link-to", "users.show", "bookmarks", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("</li>\n          ");
+      return buffer;
+      }
+    function program6(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark", options))));
+      data.buffer.push(" My Bookclips");
+      return buffer;
+      }
+
+    function program8(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-tags", options) : helperMissing.call(depth0, "fa-icon", "fa-tags", options))));
+      data.buffer.push(" Hashtags");
+      return buffer;
+      }
+
+    function program10(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-users", options) : helperMissing.call(depth0, "fa-icon", "fa-users", options))));
+      data.buffer.push(" Users");
+      return buffer;
+      }
+
+    function program12(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n    <p class='user-name'>");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-sign-in", options) : helperMissing.call(depth0, "fa-icon", "fa-sign-in", options))));
+      data.buffer.push(" signed in as ");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users.account", options) : helperMissing.call(depth0, "link-to", "users.account", options));
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("</p>\n    ");
       return buffer;
       }
-    function program4(depth0,data) {
+    function program13(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push(" ");
@@ -881,32 +940,77 @@ define("bookclipper/templates/application",
       return buffer;
       }
 
-    function program6(depth0,data) {
+    function program15(depth0,data) {
       
       var buffer = '', helper, options;
-      data.buffer.push("\n      <p class='user-login'>\n        ");
+      data.buffer.push("\n    <p class='user-login'>\n      ");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-sign-in", options) : helperMissing.call(depth0, "fa-icon", "fa-sign-in", options))));
+      data.buffer.push("\n      ");
       data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Sign Up", "users.new", options) : helperMissing.call(depth0, "link-to", "Sign Up", "users.new", options))));
-      data.buffer.push(" or\n        ");
+      data.buffer.push(" or\n      ");
       data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Log In", "users.login", options) : helperMissing.call(depth0, "link-to", "Log In", "users.login", options))));
-      data.buffer.push("\n      </p>\n    ");
+      data.buffer.push("\n    </p>\n    ");
       return buffer;
       }
 
-      data.buffer.push("<div class=\"fixed\">\n  <div class=\"contain-to-grid\">\n    <nav class=\"top-bar\" data-topbar role=\"navigation\">\n      <ul class=\"title-area\">\n        <li class=\"name\">\n          <h1><a href=\"#\"><span class='logo-clip'>");
-      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark", options))));
-      data.buffer.push("</span>Bookclipper</a></h1>\n        </li>\n        <li class=\"toggle-topbar menu-icon\"><a href=\"#\"><span>Menu</span></a></li>\n      </ul>\n\n      <section class=\"top-bar-section\">\n        <ul class=\"right\">\n          <li>");
+    function program17(depth0,data) {
+      
+      var buffer = '', stack1, helper, options;
+      data.buffer.push("\n<div class=\"nav-mobile\">\n  <ul ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleMenu", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+      data.buffer.push(">\n    <li>");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark-o", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark-o", options))));
+      data.buffer.push(" ");
       data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "All Bookclips", "bookmarks", options) : helperMissing.call(depth0, "link-to", "All Bookclips", "bookmarks", options))));
-      data.buffer.push("</li>\n\n        ");
-      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+      data.buffer.push("</li>\n\n    ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(18, program18, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n\n        <li>");
+      data.buffer.push("\n\n    <li>");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-tags", options) : helperMissing.call(depth0, "fa-icon", "fa-tags", options))));
+      data.buffer.push(" ");
       data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Hashtags", "hashtags", options) : helperMissing.call(depth0, "link-to", "Hashtags", "hashtags", options))));
-      data.buffer.push("</li>\n        <li>");
+      data.buffer.push("</li>\n    <li>");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-users", options) : helperMissing.call(depth0, "fa-icon", "fa-users", options))));
+      data.buffer.push(" ");
       data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","STRING"],data:data},helper ? helper.call(depth0, "Users", "users", options) : helperMissing.call(depth0, "link-to", "Users", "users", options))));
-      data.buffer.push("</li>\n      </section>\n    </nav>\n  </div>\n</div>\n\n<div class='user-bar'>\n  <div class='row'>\n    ");
-      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
+      data.buffer.push("</li>\n  </ul>\n</div>\n");
+      return buffer;
+      }
+    function program18(depth0,data) {
+      
+      var buffer = '', helper, options;
+      data.buffer.push("\n    <li>");
+      data.buffer.push(escapeExpression((helper = helpers['fa-icon'] || (depth0 && depth0['fa-icon']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "fa-bookmark", options) : helperMissing.call(depth0, "fa-icon", "fa-bookmark", options))));
+      data.buffer.push(" ");
+      data.buffer.push(escapeExpression((helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0,depth0],types:["STRING","STRING","STRING"],data:data},helper ? helper.call(depth0, "My Bookclips", "users.show", "bookmarks", options) : helperMissing.call(depth0, "link-to", "My Bookclips", "users.show", "bookmarks", options))));
+      data.buffer.push("</li>\n    ");
+      return buffer;
+      }
+
+      data.buffer.push("<div class=\"fixed\">\n  <div class=\"contain-to-grid\">\n    <nav class=\"top-bar\" data-topbar role=\"navigation\">\n      <ul class=\"title-area\">\n        <li class=\"name\">\n          <h1>");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bookmarks", options) : helperMissing.call(depth0, "link-to", "bookmarks", options));
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n  </div>\n</div>\n<div class='application'>\n  ");
+      data.buffer.push("</h1>\n        </li>\n        <li class=\"toggle-topbar menu-icon\"><a href=\"#\" ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleMenu", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+      data.buffer.push("><span>Menu</span></a></li>\n      </ul>\n\n      <section class=\"top-bar-section\">\n        <ul class=\"right\">\n          <li>");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "bookmarks", options) : helperMissing.call(depth0, "link-to", "bookmarks", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("</li>\n\n          ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n\n          <li>");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "hashtags", options) : helperMissing.call(depth0, "link-to", "hashtags", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("</li>\n          <li>");
+      stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users", options) : helperMissing.call(depth0, "link-to", "users", options));
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("</li>\n        </ul>\n      </section>\n    </nav>\n  </div>\n</div>\n\n<div class='user-bar'>\n  <div class='row'>\n    ");
+      stack1 = helpers['if'].call(depth0, "authenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(15, program15, data),fn:self.program(12, program12, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n  </div>\n</div>\n\n");
+      stack1 = helpers['if'].call(depth0, "menuVisible", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(17, program17, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n\n<div class='application'>\n  ");
       stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n</div>\n");
@@ -2574,6 +2678,15 @@ define("bookclipper/tests/bookclipper/tests/unit/serializers/bookmark-test.jshin
     module('JSHint - bookclipper/tests/unit/serializers');
     test('bookclipper/tests/unit/serializers/bookmark-test.js should pass jshint', function() { 
       ok(true, 'bookclipper/tests/unit/serializers/bookmark-test.js should pass jshint.'); 
+    });
+  });
+define("bookclipper/tests/controllers/application.jshint", 
+  [],
+  function() {
+    "use strict";
+    module('JSHint - controllers');
+    test('controllers/application.js should pass jshint', function() { 
+      ok(true, 'controllers/application.js should pass jshint.'); 
     });
   });
 define("bookclipper/tests/controllers/bookmarks/index.jshint", 

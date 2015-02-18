@@ -28,3 +28,30 @@ button.alert, .button.alert {
     background: #DC6363;
   }
 }
+
+.nav-mobile {
+  position: fixed;
+  right: 30px;
+  z-index: 3;
+  padding-top: 16px;
+  padding-left: 4px;
+  padding-right: 20px;
+  background: #5B9ABA;
+  border: solid 5px #eaeaea;
+  border-radius: 11px;
+  & a {
+    color: #fff;
+    transition: all 300ms ease;
+    &:hover {
+      color: #b5e4fc;
+    }
+  }
+  & ul {
+    list-style: none;
+    & li {
+      font-size: .9rem;
+      color: #fff;
+      padding: 10px;
+    }
+  }
+}

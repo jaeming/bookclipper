@@ -5,19 +5,20 @@
         <li class="name">
           <h1>{{#link-to 'bookmarks'}}<span class='logo-clip'>{{fa-icon "fa-bookmark"}}</span>Bookclipper{{/link-to}}</h1>
         </li>
-        <li class="toggle-topbar menu-icon"><a href="#" {{action 'menu'}}><span>Menu</span></a></li>
+        <li class="toggle-topbar menu-icon"><a href="#" {{action 'toggleMenu'}}><span>Menu</span></a></li>
       </ul>
 
       <section class="top-bar-section">
         <ul class="right">
-          <li>{{link-to 'All Bookclips' 'bookmarks'}}</li>
+          <li>{{#link-to 'bookmarks'}}{{fa-icon "fa-bookmark-o"}} All Bookmarks{{/link-to}}</li>
 
-        {{#if authenticated}}
-          <li>{{link-to 'My Bookclips' 'users.show' 'bookmarks'}}</li>
-        {{/if}}
+          {{#if authenticated}}
+            <li>{{#link-to 'users.show' 'bookmarks'}}{{fa-icon "fa-bookmark"}} My Bookclips{{/link-to}}</li>
+          {{/if}}
 
-        <li>{{link-to 'Hashtags' 'hashtags'}}</li>
-        <li>{{link-to 'Users' 'users'}}</li>
+          <li>{{#link-to 'hashtags'}}{{fa-icon "fa-tags"}} Hashtags{{/link-to}}</li>
+          <li>{{#link-to 'users'}}{{fa-icon "fa-users"}} Users{{/link-to}}</li>
+        </ul>
       </section>
     </nav>
   </div>
@@ -26,15 +27,32 @@
 <div class='user-bar'>
   <div class='row'>
     {{#if authenticated}}
-      <p class='user-name'>signed in as {{#link-to 'users.account'}} {{user_name}} {{/link-to}}</p>
+    <p class='user-name'>{{fa-icon "fa-sign-in"}} signed in as {{#link-to 'users.account'}} {{user_name}} {{/link-to}}</p>
     {{else}}
-      <p class='user-login'>
-        {{link-to 'Sign Up' 'users.new'}} or
-        {{link-to 'Log In' 'users.login'}}
-      </p>
+    <p class='user-login'>
+      {{fa-icon "fa-sign-in"}}
+      {{link-to 'Sign Up' 'users.new'}} or
+      {{link-to 'Log In' 'users.login'}}
+    </p>
     {{/if}}
   </div>
 </div>
+
+{{#if menuVisible}}
+<div class="nav-mobile">
+  <ul {{action "toggleMenu"}}>
+    <li>{{fa-icon "fa-bookmark-o"}} {{link-to 'All Bookclips' 'bookmarks'}}</li>
+
+    {{#if authenticated}}
+    <li>{{fa-icon "fa-bookmark"}} {{link-to 'My Bookclips' 'users.show' 'bookmarks'}}</li>
+    {{/if}}
+
+    <li>{{fa-icon "fa-tags"}} {{link-to 'Hashtags' 'hashtags'}}</li>
+    <li>{{fa-icon "fa-users"}} {{link-to 'Users' 'users'}}</li>
+  </ul>
+</div>
+{{/if}}
+
 <div class='application'>
   {{outlet}}
 </div>

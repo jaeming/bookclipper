@@ -3,15 +3,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     auth_hash = request.env["omniauth.auth"]
     uid = auth_hash['uid']
     name = auth_hash['info']['name']
-
     auth = Authorization.find_by_provider_and_uid("twitter", uid)
-    user = auth.try(:user) || find_user(name) || create_user(name)
 
-    unless user.authorizations.find_by_provider("twitter")
-      auth = user.authorizations.build(provider: "twitter", uid: uid)
-      user.authorizations << auth
-    end
-
+    user = auth.try(:user) || find_or_create_user(name)
+    auth ||= user.authorizations.build(provider: "twitter", uid: uid)
     auth.update_attributes(auth_attributes(auth_hash))
 
     if user
@@ -23,17 +18,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private
 
-    def find_user(name)
-      current_user || User.find_by_name(name)
-    end
-
-    def create_user(name)
-      user = User.new({
-        name: name,
-        password: Devise.friendly_token[0,8],
-        email: "#{UUIDTools::UUID.random_create}@shufflebox.org"
-      })
-
+    def find_or_create_user(name)
+      user = User.find_or_create_by(name: name)
+      user.password = Devise.friendly_token[0,8]
+      user.email = "#{UUIDTools::UUID.random_create}@shufflebox.org"
       user.skip_confirmation!
       user.save!
       user

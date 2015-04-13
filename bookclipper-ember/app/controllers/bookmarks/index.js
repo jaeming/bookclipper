@@ -4,11 +4,11 @@ export default Ember.ArrayController.extend({
     clipIt: function(id) {
       var _this = this;
       Ember.$.ajax({
-      url : 'api/favorites',
+      url:  'api/favorites',
       type: 'POST',
-      dataType : "json",
+      dataType: "json",
       data: {"bookmark_id": id},
-      success:function() {
+      success: function() {
         Ember.$('body').prepend("<div id='flash-wrapper'><div class='flash-message'> <h3 class='flash-text'>Added to your clips!</h3></div></div>");
         setTimeout(function(){
           Ember.$("#flash-wrapper").fadeOut("slow", function () {

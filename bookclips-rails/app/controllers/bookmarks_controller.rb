@@ -13,14 +13,14 @@ class BookmarksController < ApplicationController
 
   def create
     return head :unauthorized unless current_user
-    @bookmark = current_user.bookmarks.create(bookmark_params)
+    @bookmark = current_user.bookmarks.create!(bookmark_params)
     respond_with @bookmark
   end
 
   def update
     return head :unauthorized unless current_user
     @bookmark = Bookmark.find(params[:id])
-    @bookmark.update_attributes(bookmark_params)
+    @bookmark.update_attributes!(bookmark_params)
     head :no_content
   end
 

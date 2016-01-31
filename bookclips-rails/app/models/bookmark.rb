@@ -23,7 +23,9 @@ class Bookmark < ActiveRecord::Base
   end
 
   def set_hashtags
-    tag_topics.each { |tag| self.hashtags.find_or_create_by!(topic: tag) }
+    tag_topics.each do |tag|
+      self.hashtags |= [Hashtag.find_or_create_by!(topic: tag)]
+    end
   end
 
   def tag_topics

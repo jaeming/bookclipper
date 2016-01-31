@@ -22,6 +22,11 @@ RSpec.describe Bookmark, :type => :model do
     expect(@bookmark.description).not_to be_nil
   end
 
+  it "#tag_topics should return a General tag if tags string is empty" do
+    bookmark = create(:bookmark, url: "http://apple.com")
+    expect(bookmark.tag_topics).to eq(['general'])
+  end
+
   it "#tag_topics should split a string into seperate tags" do
     expect(@bookmark.tag_topics).to eq(['love', 'hate', 'mojo'])
   end
@@ -29,6 +34,19 @@ RSpec.describe Bookmark, :type => :model do
   it "#set_hashtags should generate hashtags for a bookmark" do
     expect(@bookmark.hashtags.size).to eq(3)
     expect(@bookmark.hashtags.pluck(:topic)).to eq(['love', 'hate', 'mojo'])
+  end
+
+  it "#set_hashtags should find a hashtag if it already exists instead of generating a new one" do
+    hashtag = Hashtag.create!(topic: "yolo")
+    bookmark = create(:bookmark, url: "http://apple.com", tags: 'yolo')
+    expect(bookmark.hashtags).to include(hashtag)
+    expect(bookmark.hashtags.first).to eq(hashtag)
+  end
+
+  it "#set_hashtags associate a General hashtag for bookmarks with no tags" do
+    bookmark = create(:bookmark, url: "http://apple.com")
+    expect(bookmark.hashtags.size).to eq(1)
+    expect(bookmark.hashtags.pluck(:topic)).to eq(['general'])
   end
 
 end

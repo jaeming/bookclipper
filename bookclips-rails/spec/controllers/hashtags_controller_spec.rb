@@ -29,5 +29,4 @@ RSpec.describe HashtagsController, :type => :controller do
 
     expect(hashtag.topic).to eq("memes")
   end
-
 end

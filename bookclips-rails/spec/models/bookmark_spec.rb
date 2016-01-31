@@ -10,7 +10,11 @@ RSpec.describe Bookmark, :type => :model do
     expect(bookmark2).to be_invalid
   end
 
-  it "generates a title and description for bookmarks" do
+  it { is_expected.to callback(:set_bookmark_meta).after(:create) }
+  it { is_expected.to callback(:set_hashtags).after(:create) }
+  it { is_expected.to callback(:set_hashtags).after(:update) }
+
+  it "checks #set_bookmark_meta generates a title and description for bookmarks" do
     bookmark = create(:bookmark, url: "http://apple.com")
 
     expect(bookmark.title).not_to be_nil

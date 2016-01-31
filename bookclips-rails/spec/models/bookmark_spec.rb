@@ -5,7 +5,6 @@ RSpec.describe Bookmark, :type => :model do
   it "checks for a valid url" do
     bookmark1 = build(:bookmark, url: "http://www.valid-url.com")
     bookmark2 = build(:bookmark, url: "www.junk-url")
-
     expect(bookmark1).to be_valid
     expect(bookmark2).to be_invalid
   end
@@ -14,11 +13,22 @@ RSpec.describe Bookmark, :type => :model do
   it { is_expected.to callback(:set_hashtags).after(:create) }
   it { is_expected.to callback(:set_hashtags).after(:update) }
 
-  it "checks #set_bookmark_meta generates a title and description for bookmarks" do
-    bookmark = create(:bookmark, url: "http://apple.com")
+  before do
+    @bookmark = create(:bookmark, url: "http://apple.com", tags: 'love, hate mojo')
+  end
 
-    expect(bookmark.title).not_to be_nil
-    expect(bookmark.description).not_to be_nil
+  it "#set_bookmark_meta should generate a title and description for bookmarks" do
+    expect(@bookmark.title).not_to be_nil
+    expect(@bookmark.description).not_to be_nil
+  end
+
+  it "#tag_topics should split a string into seperate tags" do
+    expect(@bookmark.tag_topics).to eq(['love', 'hate', 'mojo'])
+  end
+
+  it "#set_hashtags should generate hashtags for a bookmark" do
+    expect(@bookmark.hashtags.size).to eq(3)
+    expect(@bookmark.hashtags.pluck(:topic)).to eq(['love', 'hate', 'mojo'])
   end
 
 end
